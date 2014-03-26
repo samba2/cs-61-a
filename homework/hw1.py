@@ -106,5 +106,44 @@ def hailstone(n):
     >>> a
     7
     """
-    "*** YOUR CODE HERE ***"
+    def hailstone(n):
+    """Print the hailstone sequence starting at n and return its length.
+
+    >>> a = hailstone(10)  # Seven elements are 10, 5, 16, 8, 4, 2, 1
+    10
+    5
+    16
+    8
+    4
+    2
+    1
+    >>> a
+    7
+    """
+
+#    Pick a positive integer n as the start.
+#    If n is even, divide it by 2.
+#    If n is odd, multiply it by 3 and add 1.
+#    Continue this process until n is 1.
+
+    def is_even(n):
+        return n % 2 == 0
+
+    cnt = 1
+    print(n)
+
+    while ( n != 1 ):
+
+        if ( is_even(n) ):
+            n = n / 2
+        else:
+            n = n * 3 + 1
+
+        print(int(n)) # convert float to int to eliminate trailing zeros
+        cnt = cnt + 1
+
+    return cnt
+
+#a = hailstone(10)
+#print(a)
 
