@@ -58,7 +58,7 @@ def two_of_three(a, b, c):
 #print(two_of_three(5, 5, 5))
 
 # Q3.
-
+# I didn't figure that one out :-(
 def if_function(condition, true_result, false_result):
     """Return true_result if condition is a true value, and false_result otherwise."""
     if condition:
@@ -76,7 +76,7 @@ def with_if_statement():
 def with_if_function():
     return if_function(c(), t(), f())
 
-# TODO was muss zurueck gegeben werden
+
 def c():
     return True
 
