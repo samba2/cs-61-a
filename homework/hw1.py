@@ -10,9 +10,9 @@ def a_plus_abs_b(a, b):
     5
     """
     if b < 0:
-        op = _____
+        op = -b
     else:
-        op = _____
+        op = b
     return op(a, b)
 
 # Q2.
@@ -29,7 +29,33 @@ def two_of_three(a, b, c):
     >>> two_of_three(5, 5, 5)
     50
     """
-    "*** YOUR CODE HERE ***"
+    def my_max(a, b):
+        if ( a > b ):
+            return a
+        
+        return b
+
+    second = 0
+    big = 0
+
+    if ( a > b and a > c ):
+        big = a
+        second = my_max(b,c) 
+ 
+    elif ( b > c ): 
+        big = b  
+        second = my_max( a,c ) 
+
+    else:
+        big = c
+        second = my_max( a,b ) 
+        	
+    return big * big + second * second
+
+#print(two_of_three(1, 2, 3))
+#print(two_of_three(5, 3, 1))
+#print(two_of_three(10, 2, 8))
+#print(two_of_three(5, 5, 5))
 
 # Q3.
 
@@ -50,14 +76,19 @@ def with_if_statement():
 def with_if_function():
     return if_function(c(), t(), f())
 
+# TODO was muss zurueck gegeben werden
 def c():
-    "*** YOUR CODE HERE ***"
+    return True
 
 def t():
-    "*** YOUR CODE HERE ***"
+    return 1
 
 def f():
-    "*** YOUR CODE HERE ***"
+    return 0
+
+# Q4.
+# print(with_if_statement())
+# print(with_if_function())
 
 # Q4.
 
