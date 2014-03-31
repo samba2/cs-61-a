@@ -22,7 +22,7 @@ def roll_dice(num_rolls, dice=six_sided):
     assert type(num_rolls) == int, 'num_rolls must be an integer.'
     assert num_rolls > 0, 'Must roll at least once.'
 
-    # works but ugly
+    # could be nicer
     sum = 0
     had_one = False
 
@@ -54,7 +54,14 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls >= 0, 'Cannot roll a negative number of dice.'
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
-    "*** YOUR CODE HERE ***"
+
+    if (num_rolls == 0):   
+        return max(get_list_of_single_numbers(opponent_score)) + 1
+    else:
+        return roll_dice(num_rolls, dice)
+
+def get_list_of_single_numbers(opponent_score):    
+    return list(map(int, str(opponent_score)))
 
 # Playing a game
 
