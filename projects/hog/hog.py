@@ -3,9 +3,12 @@
 from dice import four_sided, six_sided, make_test_dice
 from ucb import main, trace, log_current_line, interact
 
+# TODO remove my debugging
+import pdb
+
 GOAL_SCORE = 100 # The goal of Hog is to score 100 points.
 
-######################
+#######################
 # Phase 1: Simulator #
 ######################
 
@@ -55,13 +58,19 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
 
+    def get_list_of_single_numbers(whole_number):    
+        """Converts input number to a string which single chars
+           are then converted back to integers (func int for
+           each char). 
+           The iterator returned by "map" is then converted to a list.
+        """
+        return list(map(int, str(whole_number)))
+    
     if (num_rolls == 0):   
         return max(get_list_of_single_numbers(opponent_score)) + 1
-    else:
-        return roll_dice(num_rolls, dice)
 
-def get_list_of_single_numbers(opponent_score):    
-    return list(map(int, str(opponent_score)))
+    return roll_dice(num_rolls, dice)
+
 
 # Playing a game
 
@@ -69,7 +78,14 @@ def select_dice(score, opponent_score):
     """Select six-sided dice unless the sum of SCORE and OPPONENT_SCORE is a
     multiple of 7, in which case select four-sided dice (Hog wild).
     """
-    "*** YOUR CODE HERE ***"
+
+    def is_sum_multiple_of_seven( a, b ):
+        return (a + b) % 7 == 0 
+
+    if ( is_sum_multiple_of_seven( score, opponent_score )):
+        return four_sided
+
+    return six_sided
 
 def other(who):
     """Return the other player, for a player WHO numbered 0 or 1.
@@ -80,6 +96,28 @@ def other(who):
     0
     """
     return 1 - who
+
+def is_double_score(a, b):
+    """Returns True if one score is double of the other
+
+    >>> is_double_score(1,1)
+    False
+    >>> is_double_score(1,2)
+    True
+    >>> is_double_score(50, 20)
+    False
+    >>> is_double_score(22,11)
+    True
+    >>> is_double_score(22,0)
+    False
+    """
+  
+    # prevent division by zero
+    if ( a == 0 or b == 0 ):
+        return False
+ 
+    return ( a / b == 2 or a / b == 0.5 )
+    
 
 def play(strategy0, strategy1, goal=GOAL_SCORE):
     """Simulate a game and return the final scores of both players, with
@@ -92,10 +130,29 @@ def play(strategy0, strategy1, goal=GOAL_SCORE):
     strategy0:  The strategy function for Player 0, who plays first.
     strategy1:  The strategy function for Player 1, who plays second.
     """
+
     who = 0  # Which player is about to take a turn, 0 (first) or 1 (second)
-    score, opponent_score = 0, 0
-    "*** YOUR CODE HERE ***"
-    return score, opponent_score  # You may wish to change this line.
+    score0, score1 = 0, 0
+
+    while ( score0 < goal and score1 < goal ):
+        dice = select_dice( score0, score1 )
+        num_rolls = strategy0( score0, score1 )
+
+        score0 = score0 + take_turn( num_rolls, score1, dice ) 
+
+        if ( is_double_score( score0, score1 )):
+            score0, score1 = score1, score0
+
+        who = other(who)
+        score0, score1 = score1, score0
+        strategy0, strategy1 = strategy1, strategy0
+
+    # if current player is "1" we swap a last time to come back
+    # where we've started
+    if ( who == 1 ):   
+        score0, score1 = score1, score0
+
+    return score0, score1  # You may wish to change this line.
 
 #######################
 # Phase 2: Strategies #
