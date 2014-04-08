@@ -233,6 +233,23 @@ def max_scoring_num_rolls(dice=six_sided):
     """
     "*** YOUR CODE HERE ***"
 
+    max_avg_score = 0
+    max_avg_rolls = 0
+    current_score = 0
+
+    for current_rolls in range(1,11):
+        averaged_roll_dice = make_averaged(roll_dice, 1000)
+        current_score = averaged_roll_dice(current_rolls, dice)
+
+        print(str(current_rolls) + ' dice scores ' +  
+              str(current_score) + ' on average')
+
+        if ( current_score > max_avg_score ):
+            max_avg_score = current_score
+            max_avg_rolls = current_rolls
+
+    return max_avg_rolls
+
 def winner(strategy0, strategy1):
     """Return 0 if strategy0 wins against strategy1, and 1 otherwise."""
     score0, score1 = play(strategy0, strategy1)
@@ -255,7 +272,7 @@ def run_experiments():
         four_sided_max = max_scoring_num_rolls(four_sided)
         print('Max scoring num rolls for four-sided dice:', four_sided_max)
 
-    if False: # Change to True to test always_roll(8)
+    if True: # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
 
     if False: # Change to True to test bacon_strategy
