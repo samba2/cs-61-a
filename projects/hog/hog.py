@@ -65,16 +65,16 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
 
 
 # Playing a game
+def is_multiple_of_seven( a ):
+    return a % 7 == 0 
+
 
 def select_dice(score, opponent_score):
     """Select six-sided dice unless the sum of SCORE and OPPONENT_SCORE is a
     multiple of 7, in which case select four-sided dice (Hog wild).
     """
 
-    def is_sum_multiple_of_seven( a, b ):
-        return (a + b) % 7 == 0 
-
-    if ( is_sum_multiple_of_seven( score, opponent_score )):
+    if ( is_multiple_of_seven( score + opponent_score )):
         return four_sided
 
     return six_sided
@@ -251,7 +251,7 @@ def max_scoring_num_rolls(dice=six_sided):
     10 dice scores 30.0 on average
     10
     """
-    "*** YOUR CODE HERE ***"
+    "*** YOUR CODE HERE )***"
 
     max_avg_score = 0
     max_avg_rolls = 0
@@ -298,10 +298,10 @@ def run_experiments():
     if True: # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
 
-    if False: # Change to True to test swap_strategy
+    if True: # Change to True to test swap_strategy
         print('swap_strategy win rate:', average_win_rate(swap_strategy))
 
-    if False: # Change to True to test final_strategy
+    if True: # Change to True to test final_strategy
         print('final_strategy win rate:', average_win_rate(final_strategy))
 
     "*** You may add additional experiments as you wish ***"
@@ -326,16 +326,89 @@ def swap_strategy(score, opponent_score, margin=8, num_rolls=5):
     NUM_ROLLS otherwise.
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+    
+    def new_score():
+        return score + get_free_bacon_score(opponent_score) 
 
-def final_strategy(score, opponent_score):
+    # benefical swap
+    if ( new_score() * 2 == opponent_score ):
+        return 0
+
+    # harmful swap
+    elif ( new_score() / 2  == opponent_score ):
+        return num_rolls
+
+    # explicitly call bacon_strategy with all arguments
+    return bacon_strategy(score, opponent_score, margin, num_rolls)
+
+
+def final_strategy(score, opponent_score, margin=8):
     """Write a brief description of your final strategy.
 
-    *** YOUR DESCRIPTION HERE ***
+    Uses swap strategy as base. Mainly changes the num_rolls 
+    supplied to swap.
+
+    Exception is the first "if" which detects if using free bacon would
+    give a four sided dice to the opponent.
+
+    The average win rate is around 0.58 which is slightly better than the plain swap strategy.
+    I didn't hit the 0.59 though :-(
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
 
+    def cautious_num_rolls():
+        conservative_roll = 4
+        standard_roll = 5
+        progressive_roll = 6
+
+        if ( score <= opponent_score or score < 25 ):
+            return progressive_roll
+
+        elif ( score > 85 ):
+            return conservative_roll
+
+        return standard_roll
+
+    # translates average scores to required dice roles
+    score_diff_to_rolls = { 7: 3,
+                            8: 4,
+                            9: 5 }
+
+    diff_to_next_multiple_of_seven= get_diff_to_next_multiple_of_seven( score + opponent_score )
+    free_bacon_score = get_free_bacon_score( opponent_score )
+
+    # easy one, by applying the free bacon rule, the opponents next round is with a 
+    # four sided dice
+    if ( diff_to_next_multiple_of_seven == free_bacon_score ):
+        return 0       
+
+    elif ( diff_to_next_multiple_of_seven in score_diff_to_rolls):
+        return swap_strategy(score, opponent_score, margin,
+                             score_diff_to_rolls[ diff_to_next_multiple_of_seven ] )
+
+    elif ( is_multiple_of_seven( score + margin + opponent_score + margin ) ):
+        return swap_strategy(score, opponent_score, margin, 3)
+
+    # default strategy
+    return swap_strategy(score, opponent_score, margin, cautious_num_rolls())
+
+
+def get_diff_to_next_multiple_of_seven( number ):
+    """Calculates the score difference to the next multiple of seven
+    
+    >>> get_diff_to_next_multiple_of_seven( 1 )
+    6
+    >>> get_diff_to_next_multiple_of_seven( 23 )
+    5
+    """
+    assert number >= 0 
+
+    org_number = number
+
+    while not is_multiple_of_seven( number ):
+        number = number + 1
+
+    return number - org_number
 
 ##########################
 # Command Line Interface #
