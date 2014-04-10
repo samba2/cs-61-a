@@ -58,16 +58,8 @@ def take_turn(num_rolls, opponent_score, dice=six_sided):
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     assert opponent_score < 100, 'The game should be over.'
 
-    def get_list_of_single_numbers(whole_number):    
-        """Converts input number to a string which single chars
-           are then converted back to integers (func int for
-           each char). 
-           The iterator returned by "map" is then converted to a list.
-        """
-        return list(map(int, str(whole_number)))
-    
     if (num_rolls == 0):   
-        return max(get_list_of_single_numbers(opponent_score)) + 1
+        return get_free_bacon_score(opponent_score)
 
     return roll_dice(num_rolls, dice)
 
@@ -153,6 +145,34 @@ def play(strategy0, strategy1, goal=GOAL_SCORE):
         score0, score1 = score1, score0
 
     return score0, score1  # You may wish to change this line.
+
+
+def get_free_bacon_score(opponent_score):
+
+    """ Returns the score using of the free bacon rule
+
+    >>> get_free_bacon_score(1)
+    2
+    >>> get_free_bacon_score(10)
+    2
+    >>> get_free_bacon_score(17)
+    8
+    >>> get_free_bacon_score(94)
+    10
+    """
+    assert opponent_score >= 0, 'Opponent score must be positive'
+    assert opponent_score < 100, 'Opponent score must be less then 100'
+
+    def get_list_of_single_numbers():    
+        """Converts input number to a string which single chars
+           are then converted back to integers (func int for
+           each char). 
+           The iterator returned by "map" is then converted to a list.
+        """
+        return list(map(int, str(opponent_score)))
+
+    return max(get_list_of_single_numbers()) + 1
+
 
 #######################
 # Phase 2: Strategies #
@@ -275,7 +295,7 @@ def run_experiments():
     if True: # Change to True to test always_roll(8)
         print('always_roll(8) win rate:', average_win_rate(always_roll(8)))
 
-    if False: # Change to True to test bacon_strategy
+    if True: # Change to True to test bacon_strategy
         print('bacon_strategy win rate:', average_win_rate(bacon_strategy))
 
     if False: # Change to True to test swap_strategy
@@ -293,7 +313,11 @@ def bacon_strategy(score, opponent_score, margin=8, num_rolls=5):
     and rolls NUM_ROLLS otherwise.
     """
     "*** YOUR CODE HERE ***"
-    return 5 # Replace this statement
+
+    if get_free_bacon_score(opponent_score) >= margin:
+        return 0
+
+    return num_rolls 
 
 def swap_strategy(score, opponent_score, margin=8, num_rolls=5):
     """This strategy rolls 0 dice when it would result in a beneficial swap and
