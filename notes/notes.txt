@@ -1,0 +1,5 @@
+1.2
+"Pure functions are restricted in that they cannot have side effects or change behavior over time. "
+
+running doc tests:
+python3 -m doctest -v hog.py
