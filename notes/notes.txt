@@ -3,3 +3,20 @@
 
 running doc tests:
 python3 -m doctest -v hog.py
+
+
+swap:
+
+score + margin = opponent score : return 0
+
+harmful
+
+opponent score + margin = score: return num_rolls
+
+
+backup lecture data
+-------------------
+mount mac: mount -t cifs //192.168.2.3/samba /mnt/mac/ -o username=samba
+mirror web page: wget -mk -w 20 http://inst.cs.berkeley.edu/~cs61a/sp14/
+dowload lecture screencasts: youtube-dl -citk --max-quality FORMAT 'https://www.youtube.com/view_play_list?p=-XXv-cvA_iC9x0nmh5OZyxljQU6pUWWk'
+
