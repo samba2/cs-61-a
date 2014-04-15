@@ -1,3 +1,4 @@
+from math import sqrt
 
 def find_quartile(x):
     """
@@ -74,5 +75,83 @@ def is_prime(n):
     return True
 
 
+# higher order functions
 
-# weiter bei 2.2 iteration        
+# without:
+def square_every_number(n):
+    assert n > 0
+
+    cnt = 1
+
+    while cnt <= n:
+        print( sqrt(cnt) )
+        cnt = cnt + 1
+
+
+def double_every_number(n):
+    """
+    >>> double_every_number(3)
+    2
+    4
+    6
+    """
+    assert n > 0
+
+    cnt = 1
+
+    while cnt <= n:
+        print( cnt * 2 )
+        cnt = cnt + 1
+
+# with HOF:
+
+def every(func, n):
+    
+    assert n > 0
+
+    cnt = 1
+
+    while cnt <= n:
+        print( func(cnt) )
+        cnt = cnt + 1
+
+# as learned in lecture this is the prefered style:
+# the function to be handed in is first defined with a name
+def double_every_number2(n):
+    """
+    >>> double_every_number2(3)
+    2
+    4
+    6
+    """
+
+    def double(x):
+        return x * 2
+
+    every( double, n)
+
+# ommitting nested function definition by passing in a
+# lambda expression ( anonymous function )
+def double_every_number3(n):
+    """
+    >>> double_every_number3(3)
+    2
+    4
+    6
+    """
+    every( lambda x: x * 2, n)
+
+def square_every_number2(n):
+    every( sqrt, n )
+
+
+def keep(cond, n):
+    """
+    >>> keep( lambda x: x > 1, 2)
+    1
+    2
+    >>> keep( lambda x: x < 1, 2)
+    """
+    if cond(n):
+        every( lambda x: x * 1, n )
+

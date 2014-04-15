@@ -1,6 +1,11 @@
 1.2
 "Pure functions are restricted in that they cannot have side effects or change behavior over time. "
 
+HOF definition:
+    A function that manipulates other functions as data is called a higher order function (HOF).
+    For instance, a HOF can be a function that takes functions as arguments, returns a function
+    as its value, or both.
+
 running doc tests:
 python3 -m doctest -v hog.py
 
