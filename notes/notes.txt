@@ -11,6 +11,8 @@ a relation on values is well founded if there are no infinite decending chaines.
 "If you start at some value and keep stepping to smaller values (according to the relation)
 then you must always get to a minimal value after finite steps."
 
+add:
+basic recursion rules + example
 
 
 swap:
