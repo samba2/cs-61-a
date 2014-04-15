@@ -47,4 +47,32 @@ def find_quartile2(x):
     else:    
         print("Q4")
 
+def is_prime(n):
+    """
+    >>> is_prime(2)
+    True
+    >>> is_prime(5)
+    True
+    >>> is_prime(6)
+    False
+    >>> is_prime(59)
+    True
+    >>> is_prime(60)
+    False
+    """
+
+    assert n > 1
+
+    cnt_down = n - 1
+
+    while cnt_down > 1:
+        if n % cnt_down == 0:
+            return False
+
+        cnt_down = cnt_down - 1
+
+    return True
+
+
+
 # weiter bei 2.2 iteration        
