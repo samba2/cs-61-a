@@ -155,3 +155,33 @@ def keep(cond, n):
     if cond(n):
         every( lambda x: x * 1, n )
 
+
+def and_add_one(f):
+    """
+    >>> and_add_one( lambda x: x )(2)
+    3
+    >>> and_add_one( lambda x: x * x )(5)
+    26
+    """
+    return lambda x: f(x) + 1
+
+
+def and_add(f, n):
+    """
+    >>> and_add( lambda x: x, 5 )(2)
+    7
+    >>> and_add( lambda x: x * x, 10 )(3)
+    19
+    """
+    return lambda x: f(x) + n
+
+
+# 3.4  Q3
+#      >>> composed(square, two)(7)
+#      4
+#      >>> skipped(added(square, two))()(3)
+#      ???
+#      >>> composed(two, square)(2)
+#      2
+
+# done
