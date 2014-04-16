@@ -6,6 +6,21 @@ HOF definition:
     For instance, a HOF can be a function that takes functions as arguments, returns a function
     as its value, or both.
 
+pattern for designing recursive functions:
+ - start with a base case, conditional statement for function inputs that are >>>simplest<<< 
+   to process
+ - base case is followed by one or more recursive calls. recursive calls have one goal:
+   >>>simplifying the original problem<<<.
+   recursive functions express computation by simplifying problems incremendially
+     
+leap of faith:
+ - treating a recursive call as a function abstraction
+ 
+mutual recursion:
+ - a recursive procedure is divided by two functions calling each other  
+
+- clearify "proof by induction"
+
 running doc tests:
 python3 -m doctest -v hog.py
 
