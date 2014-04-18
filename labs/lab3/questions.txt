@@ -1,0 +1,13 @@
+question 1:
+
+f = 3
+f = lambda: 3
+f = lambda x : x
+f = lambda: lambda: 3
+f = lambda: lambda x: lambda: x
+
+environment diagram:
+>>> b(y)
+9
+
+

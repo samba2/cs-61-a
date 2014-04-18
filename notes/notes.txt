@@ -6,6 +6,11 @@ HOF definition:
     For instance, a HOF can be a function that takes functions as arguments, returns a function
     as its value, or both.
 
+difference defining functions with "def" vs. lambda expression:
+  - "def" is a statement, evaluation has a side effect > generating function binding in current environment
+  - lambda is an expression which won't usually change environemnt
+    exception: lambda expression is assigned to a variable
+
 pattern for designing recursive functions:
  - start with a base case, conditional statement for function inputs that are >>>simplest<<< 
    to process
@@ -19,7 +24,24 @@ leap of faith:
 mutual recursion:
  - a recursive procedure is divided by two functions calling each other  
 
-- clearify "proof by induction"
+
+tipps from lab for recursive functions:
+
+  1. Always start with the base case. The base case handles the simplest argument 
+     your function would have to handle. The answer is extremely simple, and often 
+     follows from the definition of the problem.
+
+  2. Make a recursive call with a slightly simpler argument. This is called the 
+     "leap of faith" - your simpler argument should simplify the problem, and you 
+     should assume that the recursive call for this simpler problem will just work. 
+     As you do more problems, you'll get better at this step.
+
+  3. Use the recursive call. Remember that the recursive call solves a simpler version 
+     of the problem. Now ask yourself how you can use this result to solve the original 
+     problem.
+
+TODO clearify "proof by induction"
+
 
 running doc tests:
 python3 -m doctest -v hog.py
