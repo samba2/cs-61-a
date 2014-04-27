@@ -10,9 +10,9 @@ def a_plus_abs_b(a, b):
     5
     """
     if b < 0:
-        op = -b
+        op = sub
     else:
-        op = b
+        op = add
     return op(a, b)
 
 # Q2.
