@@ -37,7 +37,8 @@ def gcd(a, b):
     else:
         return gcd(b, a %b )
 
-# ugly cnt implementation using 'global'
+# ugly cnt implementation
+cnt = 0
 def hailstone(n):
     """Print out the hailstone sequence starting at n, and return the
     number of elements in the sequence.
