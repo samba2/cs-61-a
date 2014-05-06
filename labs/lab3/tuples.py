@@ -118,15 +118,36 @@ def reverse_recursive(tup):
         # take last element + feed list shorten by last element into recursion
         return tup[-1:] + reverse_recursive(tup[0:-1])
 
-#def merge(tup1, tup2):
-#    """Merges two sorted tuples.
-#
-#    >>> merge((1, 3, 5), (2, 4, 6))
-#    (1, 2, 3, 4, 5, 6)
-#    >>> merge((), (2, 4, 6))
-#    (2, 4, 6)
-#    >>> merge((1, 2, 3), ())
-#    (1, 2, 3)
-#    """
-#    "*** YOUR CODE HERE ***"
-#
+def merge(tup1, tup2):
+    """Merges two sorted tuples.
+
+    >>> merge((1, 8), (5,))
+    (1, 5, 8)
+    >>> merge((), (2, 4, 6))
+    (2, 4, 6)
+    >>> merge((1, 2, 3), ())
+    (1, 2, 3)
+    >>> merge((1, 3, 5), (2, 4, 6))
+    (1, 2, 3, 4, 5, 6)
+    >>> merge((1, 5, 9), (3, 7))
+    (1, 3, 5, 7, 9)
+    """
+    "*** YOUR CODE HERE ***"
+    # base criterion
+    if not tup1:
+        return tup2
+    elif not tup2: 
+        return tup1
+
+    # base crit. can be shrinked to following two lines as proposed by the solution
+    # since one of the tuples is empty anyway:
+    #
+    # if not tup1 or not tup2:
+    #    return tup1 + tup2
+
+    # recursion
+    elif tup1[0] < tup2[0]:
+        return (tup1[0],) + merge(tup1[1:], tup2)
+    else:  
+        return (tup2[0],) + merge(tup1, tup2[1:])
+
