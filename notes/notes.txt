@@ -40,6 +40,9 @@ tipps from lab for recursive functions:
      of the problem. Now ask yourself how you can use this result to solve the original 
      problem.
 
+As a general rule of thumb, whenever you need to try multiple possibilities at the same time, 
+you should consider using tree recursion.
+
 TODO clearify "proof by induction"
 
 
