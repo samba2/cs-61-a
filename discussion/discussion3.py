@@ -176,8 +176,6 @@ def sum_less_than(total, num):
 #    True
 #    >>> sum_less_than(2,1)
 #    False
-#    >>> sum_less_than(2,2)
-#    True
 #    >>> sum_less_than(3,2)
 #    True
 #    >>> sum_less_than(6,3)
@@ -189,12 +187,17 @@ def sum_less_than(total, num):
 #    True
 #    >>> sum_less_than(23, 5) # no way to make 23 by summing 1-5
 #    False
+#    if num == total:
+#        return True
+#    elif num > total:
+#        return False
+#    else:
+#        return num + sum_less_than(total, num-1 ) 
 
-    if num == total:
+# i didn't figure out this one. the solution was simple. instead of summing up (i didnt know how to do that)
+# reduce the total by the current number. in the base case check if total is "0"
+    if total == 0:
         return True
-    elif num <= 1:
+    if num == 0:
         return False
-    else:
-        return sum_less_than(total, num-1 + num ) 
-# komme hier nicht weiter. wie breche ich in die sub-summen runter?
-
+    return sum_less_than(total, num - 1) or sum_less_than(total - num, num - 1)        
