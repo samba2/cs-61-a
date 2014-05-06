@@ -99,6 +99,39 @@ def hailstone2(n, cnt=1):
         else:
             return hailstone2( n * 3 + 1, cnt+1 )
 
-#def paths(m, n):
-#    "*** YOUR CODE HERE ***"
+def paths(m, n ):
+    """Return count of paths of an insect in a grid where only moving right and down is allowed
+    >>> paths(1, 2)
+    1
+    >>> paths(2, 1)
+    1
+    >>> paths(2, 2)
+    2
+    >>> paths(3, 3)
+    6
+    """
+    "*** YOUR CODE HERE ***"
+
+    if m == 1 and n == 1:
+        return 1
+    # we're at the right edge
+    elif m == 1:
+        return paths(m, n-1)
+    # we're at the lower edge
+    elif n == 1:
+        return paths(m-1, n )
+    # two directions possible, right ( m-1) and down ( n-1 )
+    else:
+        return paths(m-1, n ) + paths(m, n-1 )
+
+# discussion of proposed solution:
 #
+# def paths(m, n):
+#     if m == 1 or n == 1:
+#         return 1
+#     return paths(m - 1, n) + paths(m, n - 1)
+#
+# this is smarter. the idea is that as soon as we hit an edge ( right
+# or bottom) the direction will not change anymore. we're just counting
+# down the other value. hence, we can return "1" earlier, even though
+# the final corner ( 1/1) wasn't reached.
