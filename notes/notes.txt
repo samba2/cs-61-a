@@ -43,8 +43,25 @@ tipps from lab for recursive functions:
 As a general rule of thumb, whenever you need to try multiple possibilities at the same time, 
 you should consider using tree recursion.
 
-TODO clearify "proof by induction"
+lessons learned recursion (German)
+..................................
 
+- haeufig liegen base case bedingung um "0", eine summation/ berechnung bis zu einem spitzenwert
+  wird versucht umzubauen zu einer differenzbildung die gegen "0" geht
+- per rekursivem aufruf geaenderte parameter ( zb. def f(sum):  aufruf: f(sum-1) sind im frame
+  der aufgerufenen funktion mit neuem geaenderten wert lokal vorhanden. von hier aus kann weiter
+  runtergebrochen werden.
+- summation: wenn nicht gegen "0" gearbeitet werden kann, muss trotzdem irgendwie ein abbruch
+  wert (z.b. max_sum) in die rekusive-funktion propagiert werden. das macht man am besten mit
+  einer  hilfsfunktion, die als zusaetzliches, sich nicht aenderndes argument den orignalwert
+  max_sum mitfuehrt. siehe discussion/discussion3.py has_sum2() und sum_range() 
+- bei sprachen mit lexical scoping kann die innere hilfsfunktion problemlos auf die argumente
+  der parent-function zugreifen, siehe sum_range()   
+- tree-recursion: wenn es um wahrheitspruefung (True/ False) geht, dann werden die verschiedenen
+  suchzweige mit "OR" verknuepft. ein einziges "TRUE" in einer der rekursiven funktionsaufrufe
+  wird bis nach oben propagiert und gibt als gesamtergebnis auch ein TRUE 
+
+TODO clearify "proof by induction"
 
 running doc tests:
 python3 -m doctest -v hog.py

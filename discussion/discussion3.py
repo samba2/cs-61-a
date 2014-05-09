@@ -34,7 +34,31 @@ def countup(n, cnt=1):
     else:
         countup(n, cnt+1 )
 
+# remarks:
+# solution was: Move the print statement to after the recursive call.
+#
+# that's great. the function frames have pilled up until the last one reaches '1'
+# as the base criterion. starting from then all function bodies are completed
+# which is printing the 'n' value of the current frame.
+def countup2(n):
+    """Print out a countdown using recursion.
 
+    >>> countup(3)
+    1
+    2
+    3
+    """
+
+    if n == 1:
+        return
+    else:
+        countdown(n-1)
+
+    # first time executed after base criterion was reached
+    print(n)
+
+
+# forgot to implement the negative base, upps
 def expt(base, power):
     """implements the exponent function
 
@@ -229,6 +253,18 @@ def has_sum(sum, n1, n2 ):
     True
     """
 
+    # the base case by the solution seams more sophisticated. however in my opinion
+    # i think there is nothing wrong with returning at "0" / below "0". 
+    # reaching zero means sum has been successfully distributed, below zero means
+    # attempt to distribute at this branch has failed.
+
+    # solution base case:
+    #if sum == n1 or sum == n2:
+    #   return True
+    #if sum < min(n1, n2):
+    #   return False
+
+    # my base case:
     if sum == 0:
         return True
     elif sum < 0:
@@ -239,6 +275,10 @@ def has_sum(sum, n1, n2 ):
 
 # counting up, preserving original sum value by using
 # a helper function
+#
+# remark: goal_sum, n1 and n2 are not necessary as arguments for
+# the helper function since they are stored in the global frame
+# and reachable by the helper function.
 def has_sum2(sum, n1, n2 ):
     """
     >>> has_sum(4, 3, 5)
@@ -278,7 +318,7 @@ def sum_range(lower, upper):
     printer_B_min = 130
     printer_B_max = 140
 
-    def _sum_range( current_lower, current_upper):
+    def _sum_range( current_lower, current_upper ):
 
         if current_upper > upper:
             return False
