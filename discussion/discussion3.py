@@ -262,3 +262,34 @@ def has_sum2(sum, n1, n2 ):
 
     return _has_sum( sum, sum, n1, n2 )
 
+
+def sum_range(lower, upper):
+    """
+    >>> sum_range(45, 60) # Printer A prints within this range the TAs would be satisfied with any number it prints
+    True
+    >>> sum_range(40, 55) # Printer A can print some number 56-60 copies, which is not within the TA acceptable range
+    False
+    >>> sum_range(170, 201) # Printer A + Printer B will print somewhere between 180 and 200 copies total
+    True
+    """
+
+    printer_A_min = 50
+    printer_A_max = 60
+    printer_B_min = 130
+    printer_B_max = 140
+
+    def _sum_range( current_lower, current_upper):
+
+        if current_upper > upper:
+            return False
+        if current_lower >= lower and current_upper <= upper:
+            return True
+
+        return _sum_range( current_lower + printer_A_min, current_upper + printer_A_max ) or \
+               _sum_range( current_lower + printer_B_min, current_upper + printer_B_max )
+    
+    # start printing either with printer A or printer B ( kick off the tree recursion with two
+    # different roots
+    return _sum_range( printer_A_min, printer_A_max ) or \
+           _sum_range( printer_B_min, printer_B_max ) 
+
