@@ -43,6 +43,8 @@ tipps from lab for recursive functions:
 As a general rule of thumb, whenever you need to try multiple possibilities at the same time, 
 you should consider using tree recursion.
 
+from recursion to iteration: http://www.refactoring.com/catalog/replaceRecursionWithIteration.html
+
 lessons learned recursion (German)
 ..................................
 
@@ -86,6 +88,8 @@ any expressions.
 map/reduce
 ----------
 - general computational patterns of mapping, filtering, and accumulation
+
+
 
 TODO clearify "proof by induction"
 
