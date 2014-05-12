@@ -83,6 +83,10 @@ but has a conventional meaning among programmers that indicates the name will no
 any expressions.
 --------------------------------------
 
+map/reduce
+----------
+- general computational patterns of mapping, filtering, and accumulation
+
 TODO clearify "proof by induction"
 
 running doc tests:
