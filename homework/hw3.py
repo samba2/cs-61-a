@@ -177,11 +177,22 @@ def get_rest(k):
 #                          other_cnt_func )
 #        
 #    return _pingpong( 1, 1, add, sub )     
-# Q4.
 
+# Q4.
+# 
+# This was hard work. I had to split it into two functions since I had to make sure
+# that "the rest" is not counted multiple times.
+# 
+# The algorithm:
+# call for each posible fraction of number the function test_ten().
+# E.g. 1982 calls test_ten with 1982 and 982 ( 82 is answered by the base case)
+#
+# test_ten() counts how often the first digit + each other digit is 10
+#
+# I assume the solution is much simpler :-(
+#
 def ten_pairs(n):
     """Return the number of ten-pairs within positive integer n.
-
     >>> ten_pairs(1)
     0
     >>> ten_pairs(19)
@@ -192,31 +203,56 @@ def ten_pairs(n):
     1
     >>> ten_pairs(1982)
     2
-    >>> #ten_pairs(7823952)
-    #3
-    >>> #ten_pairs(55055)
-    #6
-    >>> #ten_pairs(9641469)
-    #6
+    >>> ten_pairs(1782)
+    1
+    >>> ten_pairs(7823952)
+    3
+    >>> ten_pairs(55055)
+    6
+    >>> ten_pairs(9641469)
+    6
     """
-    "*** YOUR CODE HERE ***"
+
+    if n <= 99:
+        return is_first_plus_second_ten(n)
+
+    else:
+        return test_ten(n) + ten_pairs( int(str(n)[1:]))
 
 
-    if n < 10:
+def is_first_plus_second_ten( n ):
+    """Base clause"""
+    assert n <= 99
+
+    if n <= 9:
         return 0
+    else:
+        if int(str(n)[0]) + int(str(n)[1]) == 10:
+            return 1
+        else:
+            return 0
 
-    print('n: ' + str(n))
-    print('str: ' + str(get_first_number(n)) + str(get_first_number(get_rest(n))))
-    print('num: ' + str( get_first_number(n) + get_first_number(get_rest(n))))
-    
-    if get_first_number(n) + get_first_number(get_rest(n)) == 10:
-        return 1
-    else:    
-        return ten_pairs( int( str(get_first_number(n)) + str(get_rest( get_rest(n))))) + ten_pairs( get_rest(n)) 
+def test_ten( n ):
+    """Return number of ten-pairs for the first digit combined with the rest
+    >>> test_ten(1)
+    0
+    >>> test_ten( 12 )
+    0
+    >>> test_ten( 19 )
+    1
+    >>> test_ten( 288 )  # 2 + 8 and 2 + 8
+    2
+    >>> test_ten( 1982 ) # 1 + 9
+    1
+    >>> test_ten( 1099 ) # 1 + 9 and 1 + 9
+    2
+    """
 
-    return 0
+    if n <= 99:
+        return is_first_plus_second_ten(n)
 
-    # Problem: bei 1982 sind die ersten beiden zahlen gleich ein treffer. es wird sofort "1" zurueck gegeben
+    else:
+        return test_ten( int(str(n)[0] + str(n)[1])) + test_ten( int(str(n)[0] + str(n)[2:]))
 
 ## Q5.
 #
