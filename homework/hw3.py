@@ -254,22 +254,22 @@ def test_ten( n ):
     else:
         return test_ten( int(str(n)[0] + str(n)[1])) + test_ten( int(str(n)[0] + str(n)[2:]))
 
-## Q5.
-#
-#def count_change(amount):
-#    """Return the number of ways to make change for amount.
-#
-#    >>> count_change(7)
-#    6
-#    >>> count_change(10)
-#    14
-#    >>> count_change(20)
-#    60
-#    >>> count_change(100)
-#    9828
-#    """
-#    "*** YOUR CODE HERE ***"
-#
+# Q5.
+
+def count_change(amount):
+    """Return the number of ways to make change for amount.
+
+    >>> count_change(7)
+    6
+    >>> #count_change(10)
+    #14
+    >>> #count_change(20)
+    #60
+    >>> #count_change(100)
+    #9828
+    """
+    "*** YOUR CODE HERE ***"
+
 ## Q6.
 #
 #from operator import sub, mul

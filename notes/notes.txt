@@ -43,7 +43,51 @@ tipps from lab for recursive functions:
 As a general rule of thumb, whenever you need to try multiple possibilities at the same time, 
 you should consider using tree recursion.
 
-from recursion to iteration: http://www.refactoring.com/catalog/replaceRecursionWithIteration.html
+tail recursion
+..............
+  - http://de.wikipedia.org/wiki/Endrekursion
+  - "...wenn der rekursive Funktionsaufruf die letzte Aktion zur Berechnung von f ist"
+
+  Example
+  .......
+
+  no tail recursion:
+  
+  def len_rlist(s):         # A sequence is: 
+    """The length of rlist S."""
+    if s == empty_rlist:    # Empty or...
+        return 0
+    else:
+        return 1 + len_rlist(rest(s))
+                            # A first element and
+                            # the rest of the list 
+
+    returned length is accumulated via summing up all the "1" returned.
+
+    tail recursive version:
+
+    def len_rlist(s):
+        def len(sofar, s):
+        """Return SOFAR + the length of rlist S."""
+            if s == empty_rlist:
+                return sofar
+            else:
+                return len(sofar + 1, rest(s))
+        len(0, s)
+
+     "sofar" is directly returned, no extra accumulation required. temporary
+     values are stored as argument to helper function "len".
+
+
+     from tail recursion it is easy to an iterative solution:
+
+     def len_rlist(s):
+        sofar = 0
+        while s != empty_rlist:
+            sofar, s = sofar+1, rest(s)
+        return sofar
+
+    from recursion to iteration: http://www.refactoring.com/catalog/replaceRecursionWithIteration.html
 
 lessons learned recursion (German)
 ..................................
@@ -69,6 +113,13 @@ Data abstraction is a methodology that enables us to isolate how a compound data
 is used from the details of how it is constructed.
 
 
+Abstract Data Types
+...................
+ADTs are conceptual: a given programming language may or may not
+have constructs specifically designed for ADT definition, but pro-
+grammers can choose to organize their programs as collections of
+ADTs in any case.
+
 ---------------------------------
 A common convention is to use a single underscore character for the name in the for header 
 if the name is unused in the suite:
@@ -88,6 +139,55 @@ any expressions.
 map/reduce
 ----------
 - general computational patterns of mapping, filtering, and accumulation
+
+
+example of a dispatch function
+..............................
+>>> def dictionary():
+        """Return a functional implementation of a dictionary."""
+        records = []
+        def getitem(key):
+            for k, v in records:
+                if k == key:
+                    return v
+        def setitem(key, value):
+            for item in records:
+                if item[0] == key:
+                    item[1] = value
+                    return
+            records.append([key, value])
+        def dispatch(message, key=None, value=None):
+            if message == 'getitem':
+                return getitem(key)
+            elif message == 'setitem':
+                setitem(key, value)
+            elif message == 'keys':
+                return tuple(k for k, _ in records)
+            elif message == 'values':
+                return tuple(v for _, v in records)
+        return dispatch
+
+using the function:
+>>> d = dictionary()
+>>> d('setitem', 3, 9)
+>>> d('setitem', 4, 16)
+>>> d('getitem', 3)
+9
+>>> d('getitem', 4)
+16
+>>> d('keys')
+(3, 4)
+>>> d('values')
+(9, 16)
+
+constrained based system
+........................
+
+- is a programming paradigm (http://en.wikipedia.org/wiki/Constraint_programming)
+- calculation possible in multiple directions (not just only one as with using an equation)
+- modelling the constraint with simple blocks like constants, adder, multiplier, (user) input
+- changing the input changes also the network which results to a different value at on other input
+- see example with converting celius to fahrenheit and back
 
 
 
