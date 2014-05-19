@@ -191,84 +191,123 @@ def get_rest(k):
 #
 # I assume the solution is much simpler :-(
 #
-def ten_pairs(n):
-    """Return the number of ten-pairs within positive integer n.
-    >>> ten_pairs(1)
-    0
-    >>> ten_pairs(19)
-    1
-    >>> ten_pairs(199)
-    2
-    >>> ten_pairs(198)
-    1
-    >>> ten_pairs(1982)
-    2
-    >>> ten_pairs(1782)
-    1
-    >>> ten_pairs(7823952)
-    3
-    >>> ten_pairs(55055)
-    6
-    >>> ten_pairs(9641469)
-    6
-    """
-
-    if n <= 99:
-        return is_first_plus_second_ten(n)
-
-    else:
-        return test_ten(n) + ten_pairs( int(str(n)[1:]))
-
-
-def is_first_plus_second_ten( n ):
-    """Base clause"""
-    assert n <= 99
-
-    if n <= 9:
-        return 0
-    else:
-        if int(str(n)[0]) + int(str(n)[1]) == 10:
-            return 1
-        else:
-            return 0
-
-def test_ten( n ):
-    """Return number of ten-pairs for the first digit combined with the rest
-    >>> test_ten(1)
-    0
-    >>> test_ten( 12 )
-    0
-    >>> test_ten( 19 )
-    1
-    >>> test_ten( 288 )  # 2 + 8 and 2 + 8
-    2
-    >>> test_ten( 1982 ) # 1 + 9
-    1
-    >>> test_ten( 1099 ) # 1 + 9 and 1 + 9
-    2
-    """
-
-    if n <= 99:
-        return is_first_plus_second_ten(n)
-
-    else:
-        return test_ten( int(str(n)[0] + str(n)[1])) + test_ten( int(str(n)[0] + str(n)[2:]))
-
+#def ten_pairs(n):
+#    """Return the number of ten-pairs within positive integer n.
+#    >>> ten_pairs(1)
+#    0
+#    >>> ten_pairs(19)
+#    1
+#    >>> ten_pairs(199)
+#    2
+#    >>> ten_pairs(198)
+#    1
+#    >>> ten_pairs(1982)
+#    2
+#    >>> ten_pairs(1782)
+#    1
+#    >>> ten_pairs(7823952)
+#    3
+#    >>> ten_pairs(55055)
+#    6
+#    >>> ten_pairs(9641469)
+#    6
+#    """
+#
+#    if n <= 99:
+#        return is_first_plus_second_ten(n)
+#
+#    else:
+#        return test_ten(n) + ten_pairs( int(str(n)[1:]))
+#
+#
+#def is_first_plus_second_ten( n ):
+#    """Base clause"""
+#    assert n <= 99
+#
+#    if n <= 9:
+#        return 0
+#    else:
+#        if int(str(n)[0]) + int(str(n)[1]) == 10:
+#            return 1
+#        else:
+#            return 0
+#
+#def test_ten( n ):
+#    """Return number of ten-pairs for the first digit combined with the rest
+#    >>> test_ten(1)
+#    0
+#    >>> test_ten( 12 )
+#    0
+#    >>> test_ten( 19 )
+#    1
+#    >>> test_ten( 288 )  # 2 + 8 and 2 + 8
+#    2
+#    >>> test_ten( 1982 ) # 1 + 9
+#    1
+#    >>> test_ten( 1099 ) # 1 + 9 and 1 + 9
+#    2
+#    """
+#
+#    if n <= 99:
+#        return is_first_plus_second_ten(n)
+#
+#    else:
+#        return test_ten( int(str(n)[0] + str(n)[1])) + test_ten( int(str(n)[0] + str(n)[2:]))
+#
 # Q5.
 
+# this was again hard work + a lot of testing and thinking.
+# the way it works:
+# - we start with 0 amount and the smallest coin (1) with a coin count of "0"
+# - there are two directions to go:
+#   - try to increase the coin count of the current coin value (=level) or
+#   - try to distribute the amount by introducing a new coin (increase exponent)
+# - at each step the helper function _count_change recurses in those two directions
+# - in each level we never change the level_base_amount, we always compute the new amount
+#   by using get_current_amount(). this is to overcome summation errors.
 def count_change(amount):
     """Return the number of ways to make change for amount.
 
+    >>> count_change(1)
+    1
+    >>> count_change(2)
+    2
+    >>> count_change(3)
+    2
+    >>> count_change(4)
+    4
+    >>> count_change(5)
+    4
+    >>> count_change(6)
+    6
     >>> count_change(7)
     6
-    >>> #count_change(10)
-    #14
-    >>> #count_change(20)
-    #60
-    >>> #count_change(100)
-    #9828
+    >>> count_change(10)
+    14
+    >>> count_change(20)
+    60
+    >>> count_change(100)
+    9828
     """
     "*** YOUR CODE HERE ***"
+
+    def _count_change( level_base_amount, exponent_coin, cnt_coin ):
+
+        def get_current_amount():
+            return level_base_amount + cnt_coin * pow(2,exponent_coin)
+
+        if get_current_amount() == amount:
+            return 1
+        elif get_current_amount() > amount:
+            return 0
+        elif pow(2, exponent_coin) > amount: # current coin is bigger than amount
+            return 0
+
+        else:
+           return _count_change( level_base_amount, exponent_coin, cnt_coin+1 ) + \
+                  _count_change( get_current_amount(), exponent_coin+1, 0 ) 
+
+    return _count_change( 0 , 0, 0 )
 
 ## Q6.
 #
