@@ -120,6 +120,13 @@ have constructs specifically designed for ADT definition, but pro-
 grammers can choose to organize their programs as collections of
 ADTs in any case.
 
+building data abstraction
+.........................
+To facilitate data abstraction, you will need to create two types of functions: constructors
+and selectors. Constructors are functions that build the abstract data type. Selectors are
+functions that retrieve information from the data type.
+
+
 ---------------------------------
 A common convention is to use a single underscore character for the name in the for header 
 if the name is unused in the suite:
