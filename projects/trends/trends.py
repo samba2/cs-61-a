@@ -247,6 +247,54 @@ def find_centroid(polygon):
     """
     "*** YOUR CODE HERE ***"
 
+    def _get_point(index):
+        if index + 1 < len(polygon):
+            return polygon[index]
+        else:
+            return polygon[0]
+
+
+    def _get_single_area(current, nextt ):
+        return latitude(current) * longitude(nextt) - \
+               latitude(nextt) * longitude(current )
+
+    def _get_single_x(current, nextt ):
+        return (latitude(current) + latitude(nextt)) * \
+               (latitude(current) * longitude(nextt) - \
+                latitude(nextt) * longitude(current)) 
+
+    def _get_single_y(current, nextt ):
+        return (longitude(current) + longitude(nextt)) * \
+               (latitude(current) * longitude(nextt) - \
+                latitude(nextt) * longitude(current)) 
+
+    def _get_coordinate_value( value, area, zero_fn ):
+        """Finish centroid coordinate, if area if zero,
+           the latitude/ longitude of the first point is used
+        """   
+        if area == 0:
+            return zero_fn(_get_point(0))
+
+        return value / ( 6 * area ) 
+
+    area = 0
+    x = 0
+    y = 0
+
+    for i in range(len(polygon)):
+        current = _get_point(i)
+        nextt = _get_point(i+1)
+
+        area += _get_single_area(current, nextt )
+        x += _get_single_x(current, nextt)
+        y += _get_single_y(current, nextt)
+
+    area = abs(area / 2 )
+    x = _get_coordinate_value( x, area, latitude )
+    y = _get_coordinate_value( y, area, longitude )
+
+    return ( x, y, area)
+
 def find_state_center(polygons):
     """Compute the geographic center of a state, averaged over its polygons.
 
@@ -269,7 +317,18 @@ def find_state_center(polygons):
     -156.21763
     """
     "*** YOUR CODE HERE ***"
+  
+    sum_area = 0
+    sum_x = 0
+    sum_y = 0
 
+    for polygon in polygons:
+        (lat, lon, area) = find_centroid(polygon)
+        sum_x += lat * area 
+        sum_y += lon * area 
+        sum_area += area
+
+    return make_position( sum_x/ sum_area,  sum_y/ sum_area )
 
 ###################################
 # Phase 3: The Mood of the Nation #
@@ -285,7 +344,9 @@ def group_tweets_by_state(tweets):
 
     >>> sf = make_tweet("welcome to san francisco", None, 38, -122)
     >>> ny = make_tweet("welcome to new york", None, 41, -74)
+    >>> ny2 = make_tweet("welcome to new york 2", None, 41, -75)
     >>> two_tweets_by_state = group_tweets_by_state([sf, ny])
+    >>> three_tweets_by_state = group_tweets_by_state([sf, ny, ny2])
     >>> len(two_tweets_by_state)
     2
     >>> california_tweets = two_tweets_by_state['CA']
@@ -293,9 +354,40 @@ def group_tweets_by_state(tweets):
     1
     >>> tweet_string(california_tweets[0])
     '"welcome to san francisco" @ (38, -122)'
+    >>> nj_tweets = three_tweets_by_state['NJ']
+    >>> len(nj_tweets)
+    2
+    >>> tweet_string(nj_tweets[1])
+    '"welcome to new york 2" @ (41, -75)'
     """
     tweets_by_state = {}
     "*** YOUR CODE HERE ***"
+
+    def _get_closest_state( position ):
+        smallest_distance = None
+        closest_state = None
+        
+        for name in us_states.keys():
+            state_center = find_state_center( us_states[name] )
+        
+            curr_distance = geo_distance( position, state_center )
+
+            if smallest_distance is None or curr_distance < smallest_distance:
+                closest_state = name
+                smallest_distance = curr_distance
+
+        return closest_state
+
+    def _store_in_dict(dictionary, key, value):
+        if key not in dictionary:
+            dictionary[key] = [value,]
+        else:
+            dictionary[key] += [value,]
+
+    for tweet in tweets:
+        closest_state = _get_closest_state( tweet_location(tweet))
+        _store_in_dict(tweets_by_state, closest_state, tweet)
+
     return tweets_by_state
 
 def average_sentiments(tweets_by_state):
@@ -309,9 +401,37 @@ def average_sentiments(tweets_by_state):
     sentiment.
 
     tweets_by_state -- A dictionary from state names to lists of tweets
+
+    >>> sf_no_sentiment = make_tweet("golden bears", None, 38, -122)
+    >>> ny = make_tweet("welcome to new york", None, 41, -74)
+    >>> ny2 = make_tweet("welcome to new york 2", None, 41, -75)
+    
+    >>> three_tweets_by_state = group_tweets_by_state([sf_no_sentiment, ny, ny2])
+    >>> feelings = average_sentiments( three_tweets_by_state )
+    >>> 'NJ' in feelings
+    True
+    >>> 'CA' in feelings
+    False
+    >>> feelings['NJ']
+    0.4375
     """
     averaged_state_sentiments = {}
     "*** YOUR CODE HERE ***"
+
+    for state in tweets_by_state:
+        cnt = 0
+        avg = 0
+
+        for tweet in tweets_by_state[state]:
+            tweet_sentiment = analyze_tweet_sentiment( tweet )
+
+            if has_sentiment( tweet_sentiment ):
+                avg += sentiment_value(tweet_sentiment)
+                cnt += 1
+
+        if cnt > 0:
+            averaged_state_sentiments[state] = avg / cnt
+
     return averaged_state_sentiments
 
 
@@ -406,7 +526,7 @@ def run(*args):
 
 
 # only for development
-if __name__ == "__main__":
-    import doctest
-#    doctest.testmod(verbose=True)
-    doctest.run_docstring_examples( analyze_tweet_sentiment, globals(), verbose=True)
+#if __name__ == "__main__":
+#    import doctest
+##    doctest.testmod(verbose=True)
+#    doctest.run_docstring_examples( average_sentiments, globals(), verbose=True)

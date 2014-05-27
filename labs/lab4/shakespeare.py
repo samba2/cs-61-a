@@ -51,6 +51,7 @@ def shakespeare_tokens(path = 'shakespeare.txt', url = 'http://goo.gl/SztLfX'):
 
 def random_sent():
     import random
+    # start random sentence with a first word of a sentence ( key is "." as previous 'word' )
     return construct_sent(random.choice(table['.']), table)
 
 tokens = shakespeare_tokens()
