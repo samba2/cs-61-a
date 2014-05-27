@@ -216,6 +216,12 @@ hints
   -list attributes/ methods of a class: dir
   - example dir(list) to show the "list" class
 
+executing only a single function for doctests
+---------------------------------------------
+
+if __name__ == "__main__":
+    import doctest
+    doctest.run_docstring_examples( REPLACE_ME , globals(), verbose=True)
 
 add:
 basic recursion rules + example
