@@ -54,6 +54,7 @@ def reverse(lst):
     for i in range(len(lst)):
         lst.insert(i, lst.pop())
 
+
 def rotate(lst, k):
     """ Return a new list, with the same elements
     of lst, rotated to the right k.
@@ -72,6 +73,11 @@ def rotate(lst, k):
             new_position =  new_position - length
         
         return new_position
+        # remark:
+        # the solution handles the wrapping by using the remainder of the list length:
+        #
+        # new_position = (old_position + offset) % length
+        # return new_position
 
     for i in range(length):
         new_position = _get_new_position( i, length, k)
