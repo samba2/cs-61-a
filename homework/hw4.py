@@ -170,6 +170,11 @@ def par_tests():
 
 def multiple_references_explanation():
   return """The mulitple reference problem..."""
+  # - r1 and r2 are represented as float.
+  # - float has a limited length (=limited precission)
+  # . using the unprecise vairables less increases accuracy
+
+
 
 # Q8.
 
@@ -179,7 +184,8 @@ def quadratic(x, a, b, c):
     coefficients a, b, and c, for domain interval x.
 
     >>> str_interval(quadratic(interval(0, 2), -2, 3, -1))
-    '-3 to 0.125'
+    '-1 to -3'
+
     >>> str_interval(quadratic(interval(1, 3), 2, -3, 1))
     '0 to 10'
     """
@@ -212,6 +218,14 @@ def sum_nonzero_with_for(seq):
     """
     "*** YOUR CODE HERE ***"
 
+    sum = interval(0,0)
+
+    for my_interval in seq:
+        if non_zero(my_interval):
+            sum = add_interval(sum, square_interval(my_interval))
+    
+    return sum
+
 from functools import reduce
 def sum_nonzero_with_map_filter_reduce(seq):
     """Returns an interval that is the sum of the squares of the non-zero
@@ -220,7 +234,10 @@ def sum_nonzero_with_map_filter_reduce(seq):
     >>> str_interval(sum_nonzero_with_map_filter_reduce(seq))
     '0.25 to 2.25'
     """
+
     "*** YOUR CODE HERE ***"
+    return reduce( add_interval, map( square_interval, ( filter( non_zero, seq ))))
+
 
 def sum_nonzero_with_generator_reduce(seq):
     """Returns an interval that is the sum of the squares of the non-zero
@@ -231,6 +248,7 @@ def sum_nonzero_with_generator_reduce(seq):
     """
     "*** YOUR CODE HERE ***"
 
+    return reduce( add_interval, [ square_interval(x) for x in seq if non_zero(x) ])  
 
 # Q10.
 
@@ -249,6 +267,6 @@ def polynomial(x, c):
 
 if __name__ == "__main__":
     import doctest
-    doctest.run_docstring_examples( par_tests, globals(), verbose=True)
+    doctest.run_docstring_examples( sum_nonzero_with_generator_reduce, globals(), verbose=True)
 
 
