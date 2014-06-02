@@ -216,6 +216,11 @@ hints
   -list attributes/ methods of a class: dir
   - example dir(list) to show the "list" class
 
+dictionaries
+............
+- key is immutable to make shure that not mutiple keys are pointing to the same value
+- main issue is that the underlying hash function would have problems
+
 executing only a single function for doctests
 ---------------------------------------------
 
