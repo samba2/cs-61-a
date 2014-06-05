@@ -203,6 +203,20 @@ TODO clearify "proof by induction"
 running doc tests:
 python3 -m doctest -v hog.py
 
+debugging
+.........
+
+The typical usage to break into the debugger from a running program is to insert
+
+import pdb; pdb.set_trace()
+
+at the location you want to break into the debugger. You can then step through the code following this statement, 
+and continue running without the debugger using the c command.
+
+limiting recursion depth
+........................
+import sys; sys.setrecursionlimit(30)
+
 
 noetherian induction:
 a relation on values is well founded if there are no infinite decending chaines.
