@@ -235,6 +235,11 @@ dictionaries
 - key is immutable to make shure that not mutiple keys are pointing to the same value
 - main issue is that the underlying hash function would have problems
 
+Memoization
+...........
+Memoization exemplifies a common pattern in programming that computation time can often be 
+decreased at the expense of increased use of space, or vis versa.
+
 executing only a single function for doctests
 ---------------------------------------------
 
