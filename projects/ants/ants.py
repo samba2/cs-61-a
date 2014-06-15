@@ -46,11 +46,23 @@ class Place:
         if insect.is_ant():
             # Phase 2: Special handling for BodyguardAnt
             "*** YOUR CODE HERE ***"
-            assert self.ant is None, 'Two ants in {0}'.format(self)
-            self.ant = insect
+
+            assert self.ant is None or \
+                   self.ant.can_contain(insect) or \
+                   insect.can_contain(self.ant), 'Two ants in {0}'.format(self)
+
+            if self.ant is None:
+                self.ant = insect
+            elif self.ant.can_contain( insect ):
+                self.ant.contain_ant( insect )
+            elif insect.can_contain( self.ant ):
+                prev_ant = self.ant
+                self.ant = insect
+                self.ant.contain_ant( prev_ant )
         else:
             self.bees.append(insect)
-        insect.place = self
+
+        insect.place = self # this needs to happen also for inner ants
 
     def remove_insect(self, insect):
         """Remove an Insect from this Place."""
@@ -59,6 +71,13 @@ class Place:
         else:
             assert self.ant == insect, '{0} is not in {1}'.format(insect, self)
             "*** YOUR CODE HERE ***"
+            if insect.name == 'Queen' and insect.is_first_queen(): 
+                return
+
+            if insect.container and insect.ant is not None:
+                self.ant = insect.ant
+                return
+
             self.ant = None
 
         insect.place = None
@@ -149,10 +168,17 @@ class Ant(Insect):
     damage = 0
     food_cost = 0
     blocks_path = True
+    container = False
 
     def __init__(self, armor=1):
         """Create an Ant with an armor quantity."""
         Insect.__init__(self, armor)
+
+    def can_contain(self, other):
+        if self.container is True and self.ant == None and other.container is False:
+            return True
+
+        return False    
 
     def is_ant(self):
         return True
@@ -551,15 +577,12 @@ class ScubaThrower(ThrowerAnt):
     name = 'Scuba'
     "*** YOUR CODE HERE ***"
     food_cost = 5
-    armor = 1
 
     implemented = True
 
     def __init__(self):
-        self.watersafe = True
-        print(self.watersafe)
-        ThrowerAnt.__init__(self, ScubaThrower.armor )
-
+        ThrowerAnt.__init__(self)
+        self.watersafe = True # overwrite Insect default
 
 class HungryAnt(Ant):
     """HungryAnt will take three "turns" to eat a Bee in the same space as it.
@@ -567,23 +590,44 @@ class HungryAnt(Ant):
     """
     name = 'Hungry'
     "*** YOUR CODE HERE ***"
-    implemented = False
+    food_cost = 4
+    implemented = True
+    time_to_digest = 3
 
     def __init__(self):
         Ant.__init__(self)
         "*** YOUR CODE HERE ***"
+        self.digesting = 0
 
     def eat_bee(self, bee):
         "*** YOUR CODE HERE ***"
+        if bee is not None:
+            bee.reduce_armor( bee.armor ) 
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
+
+        # i guess the logic could be strucured a little bit nicer but time is pushing
+         
+        if self.time_to_digest == 0:   # disabled, always eat
+            self.eat_bee( random_or_none(self.place.bees) )
+
+        elif self.place.bees and self.digesting == 0: # normal eat
+            self.eat_bee( random_or_none(self.place.bees) )
+            self.digesting += 1
+
+        elif 0 < self.digesting < HungryAnt.time_to_digest: # digesting
+            self.digesting += 1
+        else:  # reset
+            self.digesting = 0
 
 
 class BodyguardAnt(Ant):
     """BodyguardAnt provides protection to other Ants."""
     name = 'Bodyguard'
     "*** YOUR CODE HERE ***"
+    food_cost = 4
+    container = True
     implemented = False
 
     def __init__(self):
@@ -592,9 +636,12 @@ class BodyguardAnt(Ant):
 
     def contain_ant(self, ant):
         "*** YOUR CODE HERE ***"
+        self.ant = ant
 
     def action(self, colony):
         "*** YOUR CODE HERE ***"
+        if self.ant:
+            self.ant.action(colony)
 
 
 class QueenPlace:
@@ -605,11 +652,13 @@ class QueenPlace:
     """
     def __init__(self, colony_queen, ant_queen):
         "*** YOUR CODE HERE ***"
+        self._colony_queen = colony_queen
+        self._ant_queen = ant_queen
 
     @property
     def bees(self):
         "*** YOUR CODE HERE ***"
-
+        return self._colony_queen.bees + self._ant_queen.bees 
 
 class QueenAnt(ScubaThrower):
     """The Queen of the colony.  The game is over if a bee enters her place."""
@@ -617,16 +666,68 @@ class QueenAnt(ScubaThrower):
     name = 'Queen'
     "*** YOUR CODE HERE ***"
     implemented = False
+    food_cost = 6
+
+    queen_id_cnt = 1
 
     def __init__(self):
         ScubaThrower.__init__(self)
         "*** YOUR CODE HERE ***"
+        self.doubled = {}
+        self.queen_id = QueenAnt.queen_id_cnt
+        QueenAnt.queen_id_cnt += 1
+
+    def get_place_ants(self, place):
+        """Get all ants of a place, including once hidden behind a bodyguard."""
+        my_ants = []
+        
+        if place.ant:
+            my_ants.append( place.ant )
+
+            if place.ant.container is True and place.ant.ant is not None:    
+                my_ants.append( place.ant.ant )
+
+        return my_ants
+
+    def get_ants(self, neighbour_name):
+        """Collects all ants either left ( following the 'exit' attribute
+        or right (following the 'entrance' attribute ) from the current place.
+        """
+        ants = []
+        curr_place = getattr(self.place, neighbour_name )
+
+        while curr_place is not None:
+            ants += self.get_place_ants( curr_place )
+            curr_place = getattr( curr_place, neighbour_name )
+
+        return ants
+
+
+    def is_first_queen(self ):
+        return self.queen_id == 1
+
 
     def action(self, colony):
         """A queen ant throws a leaf, but also doubles the damage of ants
         in her tunnel.  Impostor queens do only one thing: die."""
         "*** YOUR CODE HERE ***"
+      
+        if not self.is_first_queen():  # wrong queens die
+            self.reduce_armor( self.armor )
+            return
 
+        ScubaThrower.action(self, colony)
+        colony.queen = QueenPlace( colony.queen, self.place )
+
+        ants = self.get_ants( 'exit' ) + \
+               self.get_ants( 'entrance' ) + \
+               self.get_place_ants( self.place)
+
+        for ant in ants:
+            if ant not in self.doubled and not ant.name == 'Queen':
+                ant.damage = ant.damage * 2
+                self.doubled[ant] = 1
+                
 
 class AntRemover(Ant):
     """Allows the player to remove ants from the board in the GUI."""
