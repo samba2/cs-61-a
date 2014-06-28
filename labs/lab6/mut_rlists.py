@@ -120,65 +120,91 @@ def rlist_expression(s):
         rest = ', ' + rlist_expression(s.rest)
     return 'Rlist({0}{1})'.format(s.first, rest)
 
-#def foldl(rlist, fn, z):
-#    """ Left fold
-#    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
-#    >>> foldl(lst, sub, 0) # (((0 - 3) - 2) - 1)
-#    -6
-#    >>> foldl(lst, add, 0) # (((0 + 3) + 2) + 1)
-#    6
-#    >>> foldl(lst, mul, 1) # (((1 * 3) * 2) * 1)
-#    6
-#    """
-#    if rlist == Rlist.empty:
-#        return z
-#    return foldl(______, ______, ______)
+def foldl(rlist, fn, z):
+    """ Left fold
+    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
+    >>> foldl(lst, sub, 0) # (((0 - 3) - 2) - 1)
+    -6
+    >>> foldl(lst, add, 0) # (((0 + 3) + 2) + 1)
+    6
+    >>> foldl(lst, mul, 1) # (((1 * 3) * 2) * 1)
+    6
+    """
+    if rlist == Rlist.empty:
+        return z
+    return foldl( rlist.rest, fn, fn( z, rlist.first) )
+
+def foldr(rlist, fn, z):
+    """ Right fold
+    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
+    >>> foldr(lst, sub, 0) # (3 - (2 - (1 - 0)))
+    2
+    >>> foldr(lst, add, 0) # (3 + (2 + (1 + 0)))
+    6
+    >>> foldr(lst, mul, 1) # (3 * (2 * (1 * 1)))
+    6
+    """
+    "*** YOUR CODE HERE ***"
+    if rlist == Rlist.empty:
+        return z
+    return fn( rlist.first, foldr( rlist.rest, fn, z))
+
+
+def mapl(lst, fn):
+    """ Maps FN on LST
+    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
+    >>> mapped = mapl(lst, lambda x: x*x)
+    >>> print(rlist_expression(mapped))
+    Rlist(9, Rlist(4, Rlist(1)))
+    """
+    "*** YOUR CODE HERE ***"
+    # i had to look that up
+    return foldr(lst, lambda x, xs: Rlist(fn(x), xs), Rlist.empty)  
+
+#    mapped_lst = Rlist( fn(lst.first) )
+#    lst = lst.rest
 #
-#def foldr(rlist, fn, z):
-#    """ Right fold
-#    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
-#    >>> foldr(lst, sub, 0) # (3 - (2 - (1 - 0)))
-#    2
-#    >>> foldr(lst, add, 0) # (3 + (2 + (1 + 0)))
-#    6
-#    >>> foldr(lst, mul, 1) # (3 * (2 * (1 * 1)))
-#    6
-#    """
-#    "*** YOUR CODE HERE ***"
+#    for i in range(len(lst)):
+#        mapped_lst = Rlist( fn(lst[i]), mapped_lst )
 #
-#def mapl(lst, fn):
-#    """ Maps FN on LST
-#    >>> lst = Rlist(3, Rlist(2, Rlist(1)))
-#    >>> mapped = mapl(lst, lambda x: x*x)
-#    >>> print(rlist_expression(mapped))
-#    Rlist(9, Rlist(4, Rlist(1)))
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#def filterl(lst, pred):
-#    """ Filters LST based on PRED
-#    >>> lst = Rlist(4, Rlist(3, Rlist(2, Rlist(1))))
-#    >>> filtered = filterl(lst, lambda x: x % 2 == 0)
-#    >>> print(rlist_expression(filtered))
-#    Rlist(4, Rlist(2))
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#def reverse(lst):
-#    """ Reverses LST with foldl
-#    >>> reversed = reverse(Rlist(3, Rlist(2, Rlist(1))))
-#    >>> print(rlist_expression(reversed))
-#    Rlist(1, Rlist(2, Rlist(3)))
-#    >>> reversed = reverse(Rlist(1))
-#    >>> print(rlist_expression(reversed))
-#    Rlist(1)
-#    >>> reversed = reverse(Rlist.empty)
-#    >>> reversed == Rlist.empty
-#    True
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#def reverse2(lst):
+#    return mapped_lst
+
+def filterl(lst, pred):
+    """ Filters LST based on PRED
+    >>> lst = Rlist(4, Rlist(3, Rlist(2, Rlist(1))))
+    >>> filtered = filterl(lst, lambda x: x % 2 == 0)
+    >>> print(rlist_expression(filtered))
+    Rlist(4, Rlist(2))
+    """
+    "*** YOUR CODE HERE ***"
+
+    def _filter(x, xs):
+        if pred(x):
+            return Rlist(x,xs)
+        return xs
+
+    return foldr(lst, _filter, Rlist.empty)  
+
+
+def reverse(lst):
+    """ Reverses LST with foldl
+    >>> reversed = reverse(Rlist(3, Rlist(2, Rlist(1))))
+    >>> print(rlist_expression(reversed))
+    Rlist(1, Rlist(2, Rlist(3)))
+    >>> reversed = reverse(Rlist(1))
+    >>> print(rlist_expression(reversed))
+    Rlist(1)
+    >>> reversed = reverse(Rlist.empty)
+    >>> reversed == Rlist.empty
+    True
+    """
+    "*** YOUR CODE HERE ***"
+
+    # !! YES !! Got it!!
+    return foldl(lst, lambda a, b: Rlist(b, a), Rlist.empty)  
+
+
+#def reverse1(lst):
 #    """ Reverses LST without the Rlist constructor
 #    >>> reversed = reverse2(Rlist(3, Rlist(2, Rlist(1))))
 #    >>> print(rlist_expression(reversed))
@@ -192,6 +218,9 @@ def rlist_expression(s):
 #    """
 #    "*** YOUR CODE HERE ***"
 #
+#
+#
+
 #identity = lambda x: x
 #
 #def foldl2(rlist, fn, z):

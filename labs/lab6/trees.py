@@ -31,6 +31,20 @@ def size_of_tree(tree):
     12
     """
     "*** YOUR CODE HERE ***"
+    if tree.left == None and tree.right == None:
+        return 1
+    elif tree.left == None:
+        return 1 + size_of_tree( tree.right )
+    elif tree.right == None:
+        return 1 + size_of_tree( tree.left )
+    else:
+        return 1 + size_of_tree( tree.right ) + size_of_tree( tree.left ) 
+
+    # and that is the solution ;-):
+#     if not tree:
+#         return 0
+#     return 1 + size_of_tree(tree.left) + size_of_tree(tree.right)
+
 
 def deep_tree_reverse(tree):
     r""" Reverses the order of a tree
@@ -46,6 +60,14 @@ def deep_tree_reverse(tree):
     9 2    6 1  7
     """
     "*** YOUR CODE HERE ***"
+    if not tree:
+        return
+    
+    else:
+        tree.left, tree.right = tree.right, tree.left
+        deep_tree_reverse( tree.left )
+        deep_tree_reverse( tree.right )
+
 
 def filter_tree(tree, pred):
     r""" Removes TREE if entry of TREE satisfies PRED
@@ -64,6 +86,36 @@ def filter_tree(tree, pred):
     """
     "*** YOUR CODE HERE ***"
 
+    # helper function to return sonething
+
+    def _filter( my_tree ):
+        if my_tree:
+
+            if my_tree.left:
+                if pred(my_tree.left.entry):
+                    _filter( my_tree.left )
+                else:
+                    my_tree.left = None
+
+            if my_tree.right:
+                if pred(my_tree.right.entry):
+                    _filter( my_tree.right )
+                else:
+                    my_tree.right = None
+    
+    _filter( tree )
+    return tree    
+
+
+    # the solution.
+    # I'm working on the leafs whereas the solution is working on the node itself
+    # and uses proper recusion: if checks are met, return a new tree object which's
+    # leafes are computes recursively
+    if tree and pred(tree.entry):
+        return Tree(tree.entry,
+                    filter_tree(tree.left, pred),
+                    filter_tree(tree.right, pred))    
+
 def max_of_tree(tree):
     r""" Returns the max of all the values of each node in TREE
     >>> print(tree_string(t)) # doctest: +NORMALIZE_WHITESPACE
@@ -79,6 +131,21 @@ def max_of_tree(tree):
     """
     "*** YOUR CODE HERE ***"
 
+    highest = tree.entry  # start with root value
+
+    def _find_highest( my_tree ):
+        nonlocal highest
+
+        if my_tree:
+            if my_tree.entry > highest:
+                highest = my_tree.entry
+
+            _find_highest( my_tree.left )
+            _find_highest( my_tree.right )
+
+    _find_highest( tree )
+
+    return highest
 
 ###########################################################
 # Tree printing functions, kindly provided by Joseph Hui. #
