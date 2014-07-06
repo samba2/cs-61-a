@@ -123,29 +123,52 @@ def find_duplicates_k(k, lst):
     return _find_dup( 0, k + 1 )
 
 
-#def pow(n,k):
-#    """Computes n^k.
-#
-#    >>> pow(2, 3)
-#    8
-#    >>> pow(4, 2)
-#    16
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#
-#def missing_no(lst):
-#    """lst contains all the numbers from 1 to n for some n except some
-#    number k. Find k.
-#
-#    >>> missing_no([1, 0, 4, 5, 7, 9, 2, 6, 3])
-#    8
-#    >>> missing_no(list(filter(lambda x: x != 293, list(range(2000)))))
-#    293
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#
+def pow(n,k):
+    """Computes n^k.
+
+    >>> pow(2, 3)
+    8
+    >>> pow(4, 2)
+    16
+    """
+    "*** YOUR CODE HERE ***"
+
+    # this is the naive implementation
+    result = n
+
+    while k > 1:
+        result *= n
+        k -= 1
+
+    return result   
+
+    # solution, don't know if the recursion is actually cheaper
+#    if k == 1:
+#        return n
+#    if k % 2 == 0:
+#        return pow(n*n,k//2)
+#    else:
+#        return n * pow(n*n, k//2)
+
+def missing_no(lst):
+    """lst contains all the numbers from 1 to n for some n except some
+    number k. Find k.
+
+    >>> missing_no([1, 0, 4, 5, 7, 9, 2, 6, 3])
+    8
+    >>> missing_no(list(filter(lambda x: x != 293, list(range(2000)))))
+    293
+    """
+    "*** YOUR CODE HERE ***"
+
+    s1 = set(lst)
+    s2 = set(range(1, max(lst)+1))  # create full set
+
+    return (s2 - s1).pop()
+
+    # solution, via summation ;-)
+    #  return sum(range(max(lst) + 1)) - sum(lst)
+
 #def find_duplicates_k_l(k, l, lst):
 #    """Returns True if there are any two values who in lst that are within k
 #    indices apart AND if the absolute value of their difference is less than
