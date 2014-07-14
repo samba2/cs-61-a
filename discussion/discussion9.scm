@@ -71,5 +71,49 @@
     (fn s (car lst))
     (reduce fn (fn s (car lst)) (cdr lst))))
 
+; 3. Fill out the following to complete an abstract type for binary trees:
+(define (make-btree entry left right)
+  (cons entry (cons left right)))
 
+(define (entry tree)
+  (car tree))
 
+(define (left tree)
+  (car (cdr tree)))
+
+(define (right tree)
+  (cdr (cdr tree)))
+
+; 4. Using the above definition, write a function that sums over the binary tree. For our
+; purposes, assume that if there is no left or if there is no right branch, the values for
+; those should return 0.
+
+; inspired by some previous discussion...
+(define (btree-sum tree)
+  (if (null? tree)
+    0
+    (+ (entry tree) (btree-sum (left tree)) (btree-sum (right tree)))))
+
+; 5.2 Extra Questions
+; 1. Write a scheme function that when given an element, a list, and a position, inserts the
+;    element into the list at the position.
+
+(define (insert element lst position)
+  (if (or (> position (- (length lst) 1)) ; guard clauses
+          (< position 0))
+    lst   ; return original list if position is not correct
+
+    (if (= 0 position)
+      (cons element lst)
+      (cons (car lst) 
+            (insert element (cdr lst) (- position 1))))))
+
+; 2. Write a scheme function that when given a list, such as (1 2 3 4), 
+; duplicates every
+; element in the list (i.e. (1 1 2 2 3 3 4 4)).
+
+; took me 4 minutes to write, YES!! :-))
+(define (duplicate lst)
+  (if (null? lst)  ; we've reached the last element (empty list) so let's returned
+    '()            ; for the last cdr
+    (cons (car lst) (cons (car lst) (duplicate (cdr lst)))))  )  
