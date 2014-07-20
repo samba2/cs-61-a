@@ -240,6 +240,21 @@ Memoization
 Memoization exemplifies a common pattern in programming that computation time can often be 
 decreased at the expense of increased use of space, or vis versa.
 
+Programming Languages
+.....................
+After all, interpreters are programs that can carry out any possible computation, depending on their input. 
+However, many interpreters have an elegant common structure: two mutually recursive functions. 
+The first evaluates expressions in environments; the second applies functions to arguments.
+
+An interpreter for a programming language is a function that, when applied to an expression of the language, 
+performs the actions required to evaluate that expression.
+
+A parser is a composition of two components: a lexical analyzer and a syntactic analyzer. First, the lexical 
+analyzer partitions the input string into tokens, which are the minimal syntactic units of the language 
+such as names and symbols. Second, the syntactic analyzer constructs an expression tree from this sequence 
+of tokens. The sequence of tokens produced by the lexical analyzer is consumed by the syntactic analyzer.
+
+
 executing only a single function for doctests
 ---------------------------------------------
 
