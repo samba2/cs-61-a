@@ -25,6 +25,7 @@ mutual recursion:
  - a recursive procedure is divided by two functions calling each other  
 
 
+
 tipps from lab for recursive functions:
 
   1. Always start with the base case. The base case handles the simplest argument 
