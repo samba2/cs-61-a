@@ -272,6 +272,7 @@ scheme
 
 course page on github: https://github.com/PNHilfinger/61a-sp14-website
 
+
 backup lecture data
 -------------------
 mount mac: mount -t cifs //192.168.2.3/samba /mnt/mac/ -o username=samba
