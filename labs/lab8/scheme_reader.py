@@ -124,6 +124,7 @@ def scheme_read(src):
     elif val not in DELIMITERS:  # ( ) ' .
         return val
     elif val == "(":
+        # returns a Pair
         val = read_tail(src)
 
         #Note that this isn't the best idea of what to do.
@@ -137,7 +138,7 @@ def scheme_read(src):
     else:
         raise SyntaxError("unexpected token: {0}".format(val))
 
-
+# function ist sich selbst genug, erste version ohne wiederverwendung anderer funktionen
 def read_infix(first, src):
     """Returns a scheme expression which represents the equivalent scheme expression
         to the given infix expression
@@ -147,6 +148,24 @@ def read_infix(first, src):
     Pair('+', Pair(2, Pair(Pair('*', Pair(3, Pair(4, nil))), nil)))
     """
     "***YOUR CODE HERE***"
+
+    src.pop()
+    if not src.more_on_line:
+        return nil
+
+    if src.current() == ")":
+        return nil
+
+    if src.current() == "nil":
+        return nil
+# nimm erstes zeichen als operant (ohne pruefung)
+# nimm zweites zeichen als 2tes Pair argument, pruefen ob mittels "read_tail" auch 2ter test laeuft        
+
+
+    #  nil bei 'nil' string
+#    import pdb; pdb.set_trace()
+
+# read_tail(src)
 
 def read_tail(src):
     """Return the remainder of a list in src, starting before an element or ).
@@ -173,16 +192,21 @@ def read_tail(src):
 def buffer_input():
     return Buffer(tokenize_lines(InputReader('> ')))
 
-@main
-def read_print_loop():
-    """Run a read-print loop for Scheme expressions."""
-    while True:
-        try:
-            src = buffer_input()
-            while src.more_on_line:
-                expression = scheme_read(src)
-                print(repr(expression))
-        except (SyntaxError, ValueError) as err:
-            print(type(err).__name__ + ':', err)
-        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc.
-            return
+#@main
+#def read_print_loop():
+#    """Run a read-print loop for Scheme expressions."""
+#    while True:
+#        try:
+#            src = buffer_input()
+#            while src.more_on_line:
+#                expression = scheme_read(src)
+#                print(repr(expression))
+#        except (SyntaxError, ValueError) as err:
+#            print(type(err).__name__ + ':', err)
+#        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc.
+#            return
+
+if __name__ == "__main__":
+    import doctest
+    doctest.run_docstring_examples( read_infix , globals(), verbose=True)
+

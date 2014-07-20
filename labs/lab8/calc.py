@@ -146,9 +146,11 @@ def as_scheme_list(*args):
 @main
 def read_eval_print_loop():
     """Run a read-eval-print loop for Calculator."""
+
     while True:
         try:
             src = buffer_input()
+            import pdb; pdb.set_trace()
             while src.more_on_line:
                 expression = scheme_read(src)
                 print(calc_eval(expression))
