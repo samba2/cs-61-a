@@ -269,15 +269,6 @@ scheme
 - (load "file.scm")
 
 
-
-swap:
-
-score + margin = opponent score : return 0
-
-harmful
-
-opponent score + margin = score: return num_rolls
-
 course page on github: https://github.com/PNHilfinger/61a-sp14-website
 
 backup lecture data
