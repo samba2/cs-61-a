@@ -279,3 +279,14 @@ mount mac: mount -t cifs //192.168.2.3/samba /mnt/mac/ -o username=samba
 mirror web page: wget -mk -w 20 http://inst.cs.berkeley.edu/~cs61a/sp14/
 dowload lecture screencasts: youtube-dl -citk --max-quality FORMAT 'https://www.youtube.com/view_play_list?p=-XXv-cvA_iC9x0nmh5OZyxljQU6pUWWk'
 
+virtual box admin
+-----------------
+- changing inside the guest (this is probalby the only thing required):
+- changing guest box addions (this is the important bit): https://www.virtualbox.org/ticket/2928
+
+- disabling from host (didn't work):
+- VBoxManage.exe list vms
+- C:\Program Files\Oracle\VirtualBox>VBoxManage setextradata "Xubuntu 13" "VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled" "1"
+
+
+
