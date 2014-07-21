@@ -262,8 +262,12 @@ if __name__ == "__main__":
     import doctest
     doctest.run_docstring_examples( REPLACE_ME , globals(), verbose=True)
 
-add:
-basic recursion rules + example
+scheme
+......
+- mit-scheme
+- rlwrap mit-scheme
+- (load "file.scm")
+
 
 
 swap:
