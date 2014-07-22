@@ -47,7 +47,7 @@ def calc_eval(exp):
     >>> calc_eval(as_scheme_list('+', 2, as_scheme_list('/', 40, 5)))
     10
     >>> calc_eval(as_scheme_list('define', 'x', 3))
-    x
+    'x'
     >>> calc_eval(as_scheme_list('+', 'x', 2))
     5
     >>> calc_eval(as_scheme_list('*', 'x', as_scheme_list('+', 2, 'x')))
@@ -56,8 +56,7 @@ def calc_eval(exp):
     if type(exp) in (int, float):
         return simplify(exp)
     if type(exp) is str and is_identifier(exp): #do lookup here
-        "*** YOUR CODE HERE ***"
-        return nil
+        return simplify(env[exp])
     elif isinstance(exp, Pair):
         if exp.first == "define":
             return do_define_form(exp.second)
@@ -68,11 +67,17 @@ def calc_eval(exp):
 
 def is_identifier(exp):
     "*** YOUR CODE HERE ***"
-    return False
+    
+    return exp in env
 
 def do_define_form(args):
     "*** YOUR CODE HERE ***"
-    return nil
+
+    var_name = args.first
+    val = args.second.first
+
+    env[var_name] = val
+    return var_name
 
 def calc_apply(operator, args):
     """Apply the named operator to a list of args.
@@ -150,7 +155,6 @@ def read_eval_print_loop():
     while True:
         try:
             src = buffer_input()
-            import pdb; pdb.set_trace()
             while src.more_on_line:
                 expression = scheme_read(src)
                 print(calc_eval(expression))
@@ -159,3 +163,8 @@ def read_eval_print_loop():
         except (KeyboardInterrupt, EOFError):  # <Control>-D, etc.
             print('Calculation completed.')
             return
+
+# if __name__ == "__main__":
+#     import doctest
+#     doctest.run_docstring_examples( next_is_op , globals(), verbose=True)
+
