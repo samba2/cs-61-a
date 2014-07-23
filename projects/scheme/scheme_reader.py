@@ -24,6 +24,7 @@ from buffer import Buffer, InputReader, LineReader
 
 
 def scheme_read(src):
+#    import pdb; pdb.set_trace()
     """Read the next expression from SRC, a Buffer of tokens.
 
     >>> lines = ["(+ 1 ", "(+ 23 4)) ("]
@@ -53,6 +54,7 @@ def scheme_read(src):
         else:
             return intern(val)
     elif val == "'":
+        "*** YOUR CODE HERE ***"
         # nested Pair eventually matches the required structure
         rest = scheme_read(src)
         return Pair("quote", Pair(rest, nil))
@@ -72,29 +74,45 @@ def read_tail(src):
     Pair(2, Pair(Pair(3, Pair(4, nil)), nil))
     >>> read_line("(1 . 2)")
     Pair(1, 2)
+    >>> read_line("(1 . (2 3))")
+    Pair(1, Pair(2, Pair(3, nil)))
     >>> read_line("(1 2 . 3)")
     Pair(1, Pair(2, 3))
     >>> read_line("(1 . 2 3)")
     Traceback (most recent call last):
         ...
     SyntaxError: Expected one element after .
+    >>> read_line("(2 (3 . 4) 5)")
+    Pair(2, Pair(Pair(3, 4), Pair(5, nil)))
     >>> scheme_read(Buffer(tokenize_lines(["(1", "2 .", "'(3 4))", "4"])))
     Pair(1, Pair(2, Pair('quote', Pair(Pair(3, Pair(4, nil)), nil))))
 
     "'"
     """
-#    soll:
-#    Pair(1, Pair(2, Pair('quote', Pair(Pair(3, Pair(4, nil)), nil))))
-#    ist:
-#    Pair('car', Pair(Pair('quote', Pair(1, Pair(2, nil))), nil))
     try:
-#        print(src.current())
         if src.current() is None:
-            raise SyntaxError("uuuuunexpected end of file")
+            raise SyntaxError("uexpected end of file")
+        
+        # base case for recursion on lists of Pairs. Last element is "nil"
         if src.current() == ")":
             src.pop()
             return nil
+
         "*** YOUR CODE HERE ***"
+        if src.current() == ".":
+            src.pop()
+            # recursivly get second element
+            second_element = scheme_read(src)
+
+            # now we should be almost done if there is no third element but
+            # the closing bracket
+            if src.current() is not ')':
+                raise SyntaxError("Expected one element after .")
+
+            # "eat" the ')'
+            src.pop()
+            return second_element
+
         first = scheme_read(src)
         rest = read_tail(src)
         return Pair(first, rest)
@@ -139,4 +157,3 @@ def read_print_loop():
 #def run_doc_test():
 #    import doctest
 #    doctest.run_docstring_examples( scheme_read , globals(), verbose=True)
-
