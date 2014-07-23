@@ -255,6 +255,15 @@ analyzer partitions the input string into tokens, which are the minimal syntacti
 such as names and symbols. Second, the syntactic analyzer constructs an expression tree from this sequence 
 of tokens. The sequence of tokens produced by the lexical analyzer is consumed by the syntactic analyzer.
 
+"So what is evaluation? Evaluation discovers the form of an expression and executes a corresponding 
+ evaluation rule.
+ 
+ Primitive expressions are evaluated directly. Call expressions are evaluated recursively:
+ (1) Evaluate each operand expression,
+ (2) Collect their values as a list of arguments, and
+ (3) Apply the named operator to the argument list."
+
+
 
 executing only a single function for doctests
 ---------------------------------------------
