@@ -121,22 +121,22 @@ def read_line(line):
 
 # Interactive loop
 
-#@main
-#def read_print_loop():
-#    """Run a read-print loop for Scheme expressions."""
-#    while True:
-#        try:
-#            src = buffer_input("read> ")
-#            while src.more_on_line:
-#                expression = scheme_read(src)
-#                print(expression)
-#                print(repr(expression))
-#        except (SyntaxError, ValueError) as err:
-#            print(type(err).__name__ + ":", err)
-#        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc.
-#            return
 @main
-def run_doc_test():
-    import doctest
-    doctest.run_docstring_examples( scheme_read , globals(), verbose=True)
+def read_print_loop():
+    """Run a read-print loop for Scheme expressions."""
+    while True:
+        try:
+            src = buffer_input("read> ")
+            while src.more_on_line:
+                expression = scheme_read(src)
+                print(expression)
+                print(repr(expression))
+        except (SyntaxError, ValueError) as err:
+            print(type(err).__name__ + ":", err)
+        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc.
+            return
+#@main
+#def run_doc_test():
+#    import doctest
+#    doctest.run_docstring_examples( scheme_read , globals(), verbose=True)
 
