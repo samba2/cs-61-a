@@ -67,14 +67,11 @@
 (define (square x) (* x x))
 
 (define (pow b n)
-    ( cond ( (< n 0) )
-           ()
-           ()
-           ()
-           ()
-    )  
-  
-)
+    ( cond ( (< n 0) (pow (/ 1 b) (- n)))
+           ( (= n 0) 1)
+           ( (= n 1) b)
+           ( (even? n) (pow (square b) (/ n 2)))
+           ( (odd? n) (* b (pow (square b) (/ (- n 1) 2))))))
 
 
 ; Derive returns the derivative of exp with respect to var.
@@ -132,24 +129,25 @@
   (assert-equal 'x (make-product 1 'x))
   (assert-equal 6 (make-product 2 3)))
 
-; ;;; Q5.
-; 
-; (define (test-q5)
-;   (assert-equal 1 (derive '(+ x 3) 'x)))
-; 
-; (define (derive-sum exp var)
-;   'YourCodeHere)
-; 
-; ;;; Q6.
-; 
-; (define (test-q6)
-;   (assert-equal 'y (derive '(* x y) 'x))
-;   (assert-equal '(+ (* x y) (* y (+ x 3)))
-;                 (derive '(* (* x y) (+ x 3)) 'x)))
-; 
-; (define (derive-product exp var)
-;   'YourCodeHere)
-; 
+;;; Q5.
+
+(define (test-q5)
+  (assert-equal 1 (derive '(+ x 3) 'x)))
+
+(define (derive-sum exp var)
+    (make-sum (derive (augend exp) var) (derive (addend exp) var) )
+)
+
+;;; Q6.
+
+(define (test-q6)
+  (assert-equal 'y (derive '(* x y) 'x))
+  (assert-equal '(+ (* x y) (* y (+ x 3)))
+                (derive '(* (* x y) (+ x 3)) 'x)))
+
+(define (derive-product exp var)
+  'YourCodeHere)
+
 ; ;;; Q7.
 ; 
 ; (define (test-q7)
@@ -196,7 +194,8 @@
 (test-q2)
 (test-q3)
 (test-q4)
-; (test-q5)
+(test-sum)
+(test-q5)
 ; (test-q6)
 ; (test-q7)
 ; (test-q8)
