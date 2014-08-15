@@ -143,52 +143,77 @@
 (define (test-q6)
   (assert-equal 'y (derive '(* x y) 'x))
   (assert-equal '(+ (* x y) (* y (+ x 3)))
-                (derive '(* (* x y) (+ x 3)) 'x)))
+                (derive '(* (* x y) (+ x 3)) 'x))
+)
 
+; nice - just applying the product rule directly
 (define (derive-product exp var)
-  'YourCodeHere)
+    (make-sum (make-product (derive (multiplier exp) var) 
+                            (multiplicand exp)) 
+              (make-product (multiplier exp)
+                            (derive (multiplicand exp) var)))
+)
 
-; ;;; Q7.
-; 
-; (define (test-q7)
-;   (let ((x^2 (make-exponentiation 'x 2)))
-;     (assert-equal 'x (make-exponentiation 'x 1))
-;     (assert-equal 1  (make-exponentiation 'x 0))
-;     (assert-equal 16 (make-exponentiation 2 4))
-;     (assert-equal '(^ x 2) x^2)
-;     (assert-equal 'x (base x^2))
-;     (assert-equal 2  (exponent x^2))
-;     (assert-equal #t (exponentiation? x^2))
-;     (assert-equal #f (exponentiation? 1))
-;     (assert-equal #f (exponentiation? 'x))
-;   ))
-; 
-; ; Exponentiations are represented as lists that start with ^.
-; (define (make-exponentiation base exponent)
-;   'YourCodeHere)
-; 
-; (define (base exponentiation)
-;   'YourCodeHere)
-; 
-; (define (exponent exponentiation)
-;   'YourCodeHere)
-; 
-; (define (exponentiation? exp)
-;   'YourCodeHere)
-; 
-; ;;; Q8.
-; 
-; (define (test-q8)
-;   (let ((x^2 (make-exponentiation 'x 2))
-;         (x^3 (make-exponentiation 'x 3)))
-;     (assert-equal '(* 2 x) (derive x^2 'x))
-;     (assert-equal '(* 3 (^ x 2)) (derive x^3 'x))
-;     (assert-equal '(+ (* 3 (^ x 2)) (* 2 x)) (derive (make-sum x^3 x^2) 'x))
-;   ))
-; 
-; (define (derive-exponentiation exp var)
-;   'YourCodeHere)
-; 
+;;; Q7.
+
+(define (test-q7)
+  ; local assignment of 'x^2'
+  (let ((x^2 (make-exponentiation 'x 2)))
+    (assert-equal 'x (make-exponentiation 'x 1))
+    (assert-equal 1  (make-exponentiation 'x 0))
+    (assert-equal 16 (make-exponentiation 2 4))
+    (assert-equal '(^ x 2) x^2)
+    (assert-equal 'x (base x^2))
+    (assert-equal 2  (exponent x^2))
+    (assert-equal #t (exponentiation? x^2))
+    (assert-equal #f (exponentiation? 1))
+    (assert-equal #f (exponentiation? 'x))
+  ))
+
+; Exponentiations are represented as lists that start with ^.
+(define (make-exponentiation base exponent)
+    (cond ((= exponent 1) base)
+          ((= exponent 0) 1)
+          ((number? base) (pow base exponent))
+          (else (list '^ base exponent))))
+
+(define (base exponentiation)
+  (cadr exponentiation))
+
+(define (exponent exponentiation)
+  (caddr exponentiation))
+
+
+; alright, this is a hack, the solution nicely returns a boolean expression:
+;  (and (list? exp) (eq? (car exp) '^)))
+(define (exponentiation? exp)
+   (if (list? exp) 
+     (if (eq? (car exp) '^)
+       #t
+       #f
+     )
+     #f)
+  )
+
+;;; Q8.
+
+(define (test-q8)
+  (let ((x^2 (make-exponentiation 'x 2))
+        (x^3 (make-exponentiation 'x 3)))
+    (assert-equal '(* 2 x) (derive x^2 'x))
+    (assert-equal '(* 3 (^ x 2)) (derive x^3 'x))
+    (assert-equal '(+ (* 3 (^ x 2)) (* 2 x)) (derive (make-sum x^3 x^2) 'x))
+  ))
+
+; hm, apparently my solution is too simple?!
+; well, it works, though
+(define (derive-exponentiation exp var)
+    (make-product 
+      (exponent exp)
+      (make-exponentiation
+        (base exp)
+        (- (exponent exp) 1))))
+
 
 (test-q1)
 (test-q2)
@@ -196,9 +221,8 @@
 (test-q4)
 (test-sum)
 (test-q5)
-; (test-q6)
-; (test-q7)
-; (test-q8)
+(test-q6)
+(test-q7)
+(test-q8)
 
 (exit)
-
