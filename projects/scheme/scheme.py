@@ -41,6 +41,7 @@ def scheme_eval(expr, env):
             first, rest = scheme_car(expr), scheme_cdr(expr)
 
             # Evaluate Combinations
+            # symbols
             if (scheme_symbolp(first) # first might be unhashable
                 and first in SPECIAL_FORMS):
                 if proper_tail_recursion:
@@ -48,6 +49,7 @@ def scheme_eval(expr, env):
                 else:
                     expr, env = SPECIAL_FORMS[first](rest, env)
                     expr, env = scheme_eval(expr, env), None
+            # calls
             else:
                 procedure = scheme_eval(first, env)
                 args = procedure.evaluate_arguments(rest, env)
@@ -181,6 +183,8 @@ class PrimitiveProcedure(Procedure):
         (scnum(4), None)
         """
         "*** YOUR CODE HERE ***"
+        # traverse Pair list and append elemnts to an ordinary list
+        # see instructions then
 
 
 class LambdaProcedure(Procedure):
@@ -402,6 +406,7 @@ unquote_sym          = intern("unquote")
 
 # Collected special forms
 
+# dispatch table
 SPECIAL_FORMS = {
         and_sym:          do_and_form,
         begin_sym:        do_begin_form,
@@ -519,25 +524,30 @@ def create_global_frame():
             env.define(name, proc)
     return env
 
-@main
-def run(*argv):
-    next_line = buffer_input
-    interactive = True
-    load_files = ()
-    if argv:
-        try:
-            filename = argv[0]
-            if filename == '-load':
-                load_files = argv[1:]
-            else:
-                input_file = open(argv[0])
-                lines = input_file.readlines()
-                def next_line():
-                    return buffer_lines(lines)
-                interactive = False
-        except IOError as err:
-            print(err)
-            sys.exit(1)
-    read_eval_print_loop(next_line, create_global_frame(), startup=True,
-                         interactive=interactive, load_files=load_files)
-    tscheme_exitonclick()
+#@main
+#def run(*argv):
+#    next_line = buffer_input
+#    interactive = True
+#    load_files = ()
+#    if argv:
+#        try:
+#            filename = argv[0]
+#            if filename == '-load':
+#                load_files = argv[1:]
+#            else:
+#                input_file = open(argv[0])
+#                lines = input_file.readlines()
+#                def next_line():
+#                    return buffer_lines(lines)
+#                interactive = False
+#        except IOError as err:
+#            print(err)
+#            sys.exit(1)
+#    read_eval_print_loop(next_line, create_global_frame(), startup=True,
+#                         interactive=interactive, load_files=load_files)
+#    tscheme_exitonclick()
+
+if __name__ == "__main__":
+    import doctest
+    doctest.run_docstring_examples( PrimitiveProcedure.apply , globals(), verbose=False)
+
