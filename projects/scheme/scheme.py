@@ -183,9 +183,18 @@ class PrimitiveProcedure(Procedure):
         (scnum(4), None)
         """
         "*** YOUR CODE HERE ***"
-        # traverse Pair list and append elemnts to an ordinary list
-        # see instructions then
 
+        py_args = []
+        for item in args:
+            py_args.append(item)
+
+        if self.use_env:
+            py_args.append(env)
+
+        try:
+            return ( self.fn(*py_args), None )
+        except TypeError:
+            raise SchemeError
 
 class LambdaProcedure(Procedure):
     """A procedure defined by a lambda expression or the complex define form."""
@@ -524,30 +533,30 @@ def create_global_frame():
             env.define(name, proc)
     return env
 
-#@main
-#def run(*argv):
-#    next_line = buffer_input
-#    interactive = True
-#    load_files = ()
-#    if argv:
-#        try:
-#            filename = argv[0]
-#            if filename == '-load':
-#                load_files = argv[1:]
-#            else:
-#                input_file = open(argv[0])
-#                lines = input_file.readlines()
-#                def next_line():
-#                    return buffer_lines(lines)
-#                interactive = False
-#        except IOError as err:
-#            print(err)
-#            sys.exit(1)
-#    read_eval_print_loop(next_line, create_global_frame(), startup=True,
-#                         interactive=interactive, load_files=load_files)
-#    tscheme_exitonclick()
+@main
+def run(*argv):
+    next_line = buffer_input
+    interactive = True
+    load_files = ()
+    if argv:
+        try:
+            filename = argv[0]
+            if filename == '-load':
+                load_files = argv[1:]
+            else:
+                input_file = open(argv[0])
+                lines = input_file.readlines()
+                def next_line():
+                    return buffer_lines(lines)
+                interactive = False
+        except IOError as err:
+            print(err)
+            sys.exit(1)
+    read_eval_print_loop(next_line, create_global_frame(), startup=True,
+                         interactive=interactive, load_files=load_files)
+    tscheme_exitonclick()
 
-if __name__ == "__main__":
-    import doctest
-    doctest.run_docstring_examples( PrimitiveProcedure.apply , globals(), verbose=False)
+# if __name__ == "__main__":
+#     import doctest
+#     doctest.run_docstring_examples( PrimitiveProcedure.apply , globals(), verbose=False)
 
