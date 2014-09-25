@@ -340,7 +340,6 @@ def do_quote_form(vals, env):
     """Evaluate a quote form with parameters VALS. ENV is ignored."""
     check_form(vals, 1, 1)
     "*** YOUR CODE HERE ***"
-#    import pdb; pdb.set_trace()
     
     return ( vals[0], None )
 
@@ -413,9 +412,16 @@ def do_cond_form(vals, env):
 def do_begin_form(vals, env):
     """Evaluate begin form with parameters VALS in environment ENV."""
     check_form(vals, 0)
+
     if scheme_nullp(vals):
         return okay, None
     "*** YOUR CODE HERE ***"
+
+    for p in vals:
+        expr = scheme_eval(p, env)
+
+    return expr, None 
+
 
 # Collected symbols with significance to the interpreter
 

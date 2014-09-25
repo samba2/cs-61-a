@@ -100,8 +100,20 @@ circumference
 (eval (cons 'car '('(1 2))))
 ; expect 1
 
-(exit)
 
+;;; problem 7, begin
+(begin (+ 2 3) (+ 5 6))
+; expect 11
+
+
+(begin (display 3) (newline) (+ 2 3))
+; expect 3 ; 5
+
+(begin (print 3) '(+ 2 3))
+; expect 3 ; (+ 2 3)
+
+(exit)
+;;;
 ;;; 1.1.4
 
 (define (square x) (* x x))
