@@ -107,7 +107,19 @@ class Frame:
         symbols."""
         if type(symbol) is str:
             symbol = intern(symbol)
+
         "*** YOUR CODE HERE ***"
+        curr_frame = self
+
+        while True:
+            if symbol in curr_frame.bindings:
+                return curr_frame.bindings[symbol]
+            
+            if curr_frame.parent is None:
+                break
+
+            curr_frame = curr_frame.parent
+
         raise SchemeError("unknown identifier: {0}".format(str(symbol)))
 
 
@@ -308,7 +320,16 @@ def do_define_form(vals, env):
     target = vals[0]
     if scheme_symbolp(target):
         check_form(vals, 2, 2)
+        
         "*** YOUR CODE HERE ***"
+
+        # this took me a while to understand. the expression is entirly evaluated.
+        # only the result is stored in the current environment
+        expr = scheme_eval( vals.cdr().car(), env )
+        env.bindings[target] = expr
+
+        return (target, None)
+
     elif scheme_pairp(target):
         "*** YOUR CODE HERE ***"
     else:

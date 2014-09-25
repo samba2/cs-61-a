@@ -56,13 +56,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Move the following (exit) line to run additional tests. ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(exit)
 
 
 ;;; 1.1.2
 
 (define size 2)
 ; expect size
+
 size
 ; expect 2
 
@@ -78,6 +78,12 @@ size
 circumference
 ; expect 62.8318
 
+(define x 15)
+(define y (* 2 x))
+(+ y (* y 2) 1)
+; expect 91
+
+(exit)
 ;;; 1.1.4
 
 (define (square x) (* x x))
