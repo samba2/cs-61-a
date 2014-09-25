@@ -112,7 +112,19 @@ circumference
 (begin (print 3) '(+ 2 3))
 ; expect 3 ; (+ 2 3)
 
+;;; problem 8, do_lambda_form
+
+(lambda (x y) (+ x y))
+; expect (lambda (x y) (+ x y))
+
+(lambda (x) (+ 2 x) (+ 5 x))
+; expect (lambda (x) (begin (+ 2 x) (+ 5 x)))
+
+(lambda (y) (print y) (* y 2))
+; expect (lambda (y) (begin (print y) (* y 2)))
+
 (exit)
+;;;
 ;;;
 ;;; 1.1.4
 

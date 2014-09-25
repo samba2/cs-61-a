@@ -302,7 +302,23 @@ def do_lambda_form(vals, env, function_type=LambdaProcedure):
     check_form(vals, 2)
     formals = vals[0]
     check_formals(formals)
+
     "*** YOUR CODE HERE ***"
+    body = vals.second
+
+    if body.length() == 0:
+        raise SchemeError("lambda expression with zero body length")
+
+    elif body.length() == 1:
+        body = scheme_car(body)
+
+    # multiple expressions
+    else:        
+        body = Pair(intern('begin'), body )
+
+    return function_type( formals, body, env ), None
+
+
 
 def do_mu_form(vals, env):
     """Evaluate a mu (dynamically scoped lambda) form with formals VALS[0]
