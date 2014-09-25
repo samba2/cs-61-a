@@ -340,6 +340,9 @@ def do_quote_form(vals, env):
     """Evaluate a quote form with parameters VALS. ENV is ignored."""
     check_form(vals, 1, 1)
     "*** YOUR CODE HERE ***"
+#    import pdb; pdb.set_trace()
+    
+    return ( vals[0], None )
 
 
 def do_let_form(vals, env):

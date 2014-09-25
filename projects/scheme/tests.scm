@@ -83,7 +83,25 @@ circumference
 (+ y (* y 2) 1)
 ; expect 91
 
+;;; quotes, Problem B6
+
+'hello
+; expect hello
+
+'(1 . 2)
+; expect (1 . 2)
+
+'(1 (2 three . (4 . 5)))
+; expect (1 (2 three 4 . 5))
+
+(car '(a b))
+; expect a
+
+(eval (cons 'car '('(1 2))))
+; expect 1
+
 (exit)
+
 ;;; 1.1.4
 
 (define (square x) (* x x))
