@@ -123,13 +123,29 @@ circumference
 (lambda (y) (print y) (* y 2))
 ; expect (lambda (y) (begin (print y) (* y 2)))
 
-(exit)
+
+;;; problem 9
+;;;
+(define (f x) (* x 2))
+; expect f
+
+(define (square x) (* x x))
+; expect square
+
+square
+; expect (lambda (x) (* x x))
+
+
 ;;;
 ;;;
 ;;; 1.1.4
 
 (define (square x) (* x x))
 ; expect square
+
+(exit)
+
+
 (square 21)
 ; expect 441
 

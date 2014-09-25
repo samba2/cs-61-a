@@ -303,6 +303,8 @@ def do_lambda_form(vals, env, function_type=LambdaProcedure):
     formals = vals[0]
     check_formals(formals)
 
+
+
     "*** YOUR CODE HERE ***"
     body = vals.second
 
@@ -334,6 +336,8 @@ def do_define_form(vals, env):
     """Evaluate a define form with parameters VALS in environment ENV."""
     check_form(vals, 2)
     target = vals[0]
+    
+
     if scheme_symbolp(target):
         check_form(vals, 2, 2)
         
@@ -348,6 +352,19 @@ def do_define_form(vals, env):
 
     elif scheme_pairp(target):
         "*** YOUR CODE HERE ***"
+
+        function_name = scheme_car( target )
+        function_args = scheme_cdr( target )
+        function_body = vals.second
+
+        if scheme_numberp( function_name ):
+            raise SchemeError("function name can't be a number")
+
+        lambda_proc, tmp = do_lambda_form( Pair(function_args, function_body), env )
+        env.bindings[ function_name ] = lambda_proc
+
+        return function_name, None
+
     else:
         raise SchemeError("bad argument to define")
 
