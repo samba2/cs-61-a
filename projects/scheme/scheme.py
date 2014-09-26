@@ -143,6 +143,13 @@ class Frame:
         """
         frame = Frame(self)
         "*** YOUR CODE HERE ***"
+
+        if formals.length() != vals.length():
+            raise SchemeError("encountered different number of formal parameters and arguments")
+
+        for index, item in enumerate(formals):
+            frame.bindings[ formals[index] ] = vals[index]
+
         return frame
 
     def define(self, sym, val):
@@ -619,7 +626,7 @@ def run(*argv):
                          interactive=interactive, load_files=load_files)
     tscheme_exitonclick()
 
-# if __name__ == "__main__":
-#     import doctest
-#     doctest.run_docstring_examples( PrimitiveProcedure.apply , globals(), verbose=False)
+#if __name__ == "__main__":
+#    import doctest
+#    doctest.run_docstring_examples( Frame.make_call_frame , globals(), verbose=False)
 
