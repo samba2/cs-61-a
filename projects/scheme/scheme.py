@@ -145,10 +145,11 @@ class Frame:
         "*** YOUR CODE HERE ***"
 
         if formals.length() != vals.length():
-            raise SchemeError("encountered different number of formal parameters and arguments")
+            errorMsg="encountered different number of formal parameters and arguments"
+            raise SchemeError(errorMsg)
 
         for index, item in enumerate(formals):
-            frame.bindings[ formals[index] ] = vals[index]
+            frame.bindings[formals[index]] = vals[index]
 
         return frame
 
@@ -521,7 +522,15 @@ def check_formals(formals):
 
     >>> check_formals(read_line("(a b c)"))
     """
-    "*** YOUR CODE HERE ***"
+    " *** YOUR CODE HERE ***"
+    for parameter in formals:
+        if not scheme_symbolp(parameter):
+            raise SchemeError("Not a symbol: " + str(parameter))
+
+    # sets are great!!!
+    if len(formals) != len(set(formals)):
+            raise SchemeError("Found lambda definition with duplicated parameters")
+
 
 ################
 # Input/Output #
