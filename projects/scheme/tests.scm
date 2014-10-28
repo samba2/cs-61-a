@@ -8,6 +8,24 @@
 
 ;;; *** Add more of your own here! ***
 
+(if (= 4 2) true false)
+; expect #f
+
+(if (= 4 4) (* 1 2) (+ 3 4))
+; expect 2
+
+(if 1 500 0)
+; expect 500
+
+(if #t 500 0)
+; expect 500
+
+(if #f 500 0)
+; expect 0
+
+(if #f 500)
+; expect okay 
+
 (define (outer x y)
      (define (inner z x)
          (list x         y           z))
