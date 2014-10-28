@@ -156,7 +156,6 @@ square
 (define (square x) (* x x))
 ; expect square
 
-(exit)
 
 
 (square 21)
@@ -181,6 +180,9 @@ square
   (sum-of-squares (+ a 1) (* a 2)))
 (f 5)
 ; expect 136
+
+(exit)
+
 
 ;;; 1.1.6
 
