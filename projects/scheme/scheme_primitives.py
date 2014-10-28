@@ -183,6 +183,7 @@ class SchemeValue:
         """Evaluate the expressions in ARG_LIST in ENV to produce
         arguments for this procedure. Returns an iterable of the results."""
         msg = "attempt to call something of non-function type ({0})"
+
         raise SchemeError(msg.format(type(self).__name__))
 
     def apply(self, args, env):

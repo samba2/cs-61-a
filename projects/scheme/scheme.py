@@ -255,6 +255,10 @@ class LambdaProcedure(Procedure):
         else:
             "*** YOUR CODE HERE ***"
 
+            frame = self.env.make_call_frame(self.formals, args)
+            return scheme_eval(self.body, frame), None
+
+
 class MuProcedure(LambdaProcedure):
     """A procedure defined by a mu expression, which has dynamic scope.
      _________________
@@ -310,7 +314,6 @@ def do_lambda_form(vals, env, function_type=LambdaProcedure):
     check_form(vals, 2)
     formals = vals[0]
     check_formals(formals)
-
 
 
     "*** YOUR CODE HERE ***"

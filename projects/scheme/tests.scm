@@ -8,6 +8,19 @@
 
 ;;; *** Add more of your own here! ***
 
+(define (outer x y)
+     (define (inner z x)
+         (list x         y           z))
+     (inner x 10))
+(outer 1 2)
+; expect (10 2 1)
+
+(define double (lambda (x) (* 2 x)))
+(define compose (lambda (f g) (lambda (x) (f (g x)))))
+(define apply-twice (lambda (f) (compose f f)))
+((apply-twice double) 5)
+; expect 20
+
 ;;; These are examples from several sections of "The Structure
 ;;; and Interpretation of Computer Programs" by Abelson and Sussman.
 
