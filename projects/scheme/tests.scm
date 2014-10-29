@@ -69,6 +69,12 @@
 )
 ; expect (hi bye)
 
+(begin
+  (define f (mu (x) (+ x y)))
+  (define g (lambda (x y) (f (+ x x))))
+  (g 3 7))
+; expect 13
+
 (let ((x 42) (y 16)) (+ x y))
 ; expect 58
 
@@ -263,7 +269,6 @@ square
 (f 5)
 ; expect 136
 
-(exit)
 
 
 ;;; 1.1.6

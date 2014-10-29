@@ -280,6 +280,8 @@ class MuProcedure(LambdaProcedure):
             "*** YOUR CODE HERE ***"
         else:
             "*** YOUR CODE HERE ***"
+            frame = env.make_call_frame(self.formals, args)
+            return scheme_eval(self.body, frame), None
 
 # Call-by-name (nu) extension.
 class NuProcedure(LambdaProcedure):
