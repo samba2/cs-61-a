@@ -54,6 +54,24 @@
 (cond ((= 4 4) 'here 42))
 ; expect 42
 
+(let ((x 42)
+      (y (* 5 10)))
+  (list x y))
+; expect (42 50)
+
+(begin
+    (define x 'hi)
+    (define y 'bye)
+    (let ((x 42)
+          (y (* 5 10)))
+          (list x y))
+    (list x y)
+)
+; expect (hi bye)
+
+(let ((x 42) (y 16)) (+ x y))
+; expect 58
+
 (if (= 4 2) true false)
 ; expect #f
 

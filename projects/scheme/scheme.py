@@ -401,6 +401,13 @@ def do_let_form(vals, env):
     "*** YOUR CODE HERE ***"
     new_env = env.make_call_frame(names, values)
 
+    for key_val in bindings:
+        key = scheme_car(key_val)
+        val = scheme_car(scheme_cdr(key_val))
+
+        val = scheme_eval(val, env)        
+        new_env.bindings[key] = val
+
     # Evaluate all but the last expression after bindings, and return the last
     last = len(exprs)-1
     for i in range(0, last):
