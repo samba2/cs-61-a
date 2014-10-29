@@ -263,7 +263,7 @@ of tokens. The sequence of tokens produced by the lexical analyzer is consumed b
  (2) Collect their values as a list of arguments, and
  (3) Apply the named operator to the argument list."
 
-
+"Any difficulty in computer science can be overcome by adding a level of indirection."
 
 executing only a single function for doctests
 ---------------------------------------------

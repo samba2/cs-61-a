@@ -26,6 +26,34 @@
 (or 4 #t (/ 1 0))
 ; expect 4
 
+(cond ((= 4 3) 'nope)
+      ((= 4 4) 'hi)
+      (else 'wait))
+; expect hi
+
+(cond ((= 4 3) 'nope)
+      ((= 4 2) 'hi)
+      (else 'wait))
+; expect wait
+
+(cond ((= 4 3) 'wat)
+      ((= 4 4))
+      (else 'hm))
+; expect #t
+
+(cond (12))
+; expect 12
+
+(cond ((= 4 3))
+      ('hi))
+; expect hi
+
+(cond ((= 4 4) (begin 'here 42)))
+; expect 42
+
+(cond ((= 4 4) 'here 42))
+; expect 42
+
 (if (= 4 2) true false)
 ; expect #f
 

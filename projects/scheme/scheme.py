@@ -485,6 +485,16 @@ def do_cond_form(vals, env):
             test = scheme_eval(clause.first, env)
         if test:
             "*** YOUR CODE HERE ***"
+            if clause.second is nil:
+                return test, None
+
+            elif clause.second.length() == 1:
+                expr = clause.second.first
+            else:
+                expr = Pair(intern('begin'), clause.second )
+    
+            return scheme_eval(expr, env), None
+
     return okay, None
 
 def do_begin_form(vals, env):
