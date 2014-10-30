@@ -63,7 +63,6 @@
 
 (merge greater-list '((3 2 1) (1 1) (0)) '((4 0) (3 2 0) (3 2) (1)))
 ; expect ((4 0) (3 2 1) (3 2 0) (3 2) (1 1) (1) (0))
-;(exit)
 
 
 ; Problem 19
@@ -71,12 +70,22 @@
 ;; A list of all ways to partition TOTAL, where  each partition must
 ;; be at most MAX-VALUE and there are at most MAX-PIECES partitions.
 (define (list-partitions total max-pieces max-value)
-  ; *** YOUR CODE HERE ***
-  nil)
+; *** YOUR CODE HERE ***
+  (define empty_list '())
+  (define (helper total max-pieces max-value pieces_list)
+    (cond
+       ((= total 0) (list pieces_list))
+       ((or (= max-pieces 0) (< total 0) (< max-value 1)) empty_list)
+       (else (append
+         (helper (- total max-value) (- max-pieces 1) max-value (append pieces_list (list max-value)))
+         (helper total max-pieces (- max-value 1) pieces_list)))))
 
+  (helper total max-pieces max-value empty_list)
+)
 ; Problem 19 tests rely on correct Problem 18.
 (sort-lists (list-partitions 5 2 4))
 ; expect ((4 1) (3 2))
+
 (sort-lists (list-partitions 7 3 5))
 ; expect ((5 2) (5 1 1) (4 3) (4 2 1) (3 3 1) (3 2 2))
 
