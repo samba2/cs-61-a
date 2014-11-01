@@ -123,15 +123,33 @@
                                             (make-tree 3 nil)))
                               (make-tree 4 nil))))))
 
+
+;; not the nicest implementation but I'm done with Scheme...
+
 ;; Takes a TREE of numbers and outputs a list of sums from following each
 ;; possible path from root to leaf.
 (define (tree-sums tree)
   ; *** YOUR CODE HERE ***
-  nil)
+
+;;    (map entry (list 1 2 3))
+  (define (sum-tree curr-sum tree)
+    (cond 
+          ((and (number? (entry tree)) (null? (children tree))) 
+            (print (+ curr-sum (entry tree))))  ;; done
+          ((number? (entry tree)) (sum-tree (+ curr-sum (entry tree)) (children tree)))
+          (else
+             (sum-tree curr-sum (entry tree)) ;; vertical tree access
+             (if (not (null? (children tree)))
+               (sum-tree curr-sum (children tree))
+             ))) ;; horizontal tree access
+  )
+
+  (sum-tree (entry tree) (children tree))
+)
 
 (tree-sums tree)
+(exit)
 ; expect (20 19 13 16 11)
-
 
 ; Problem 21 (optional)
 
