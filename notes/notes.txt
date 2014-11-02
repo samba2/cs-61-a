@@ -265,6 +265,84 @@ of tokens. The sequence of tokens produced by the lexical analyzer is consumed b
 
 "Any difficulty in computer science can be overcome by adding a level of indirection."
 
+Scheme project findings
+.......................
+- calling "apply" for different scheme types (procedure, integer....)
+- one way:
+   - if isinstanceof(...)
+       apply_procedure(..)
+   - elsif isinstanceof(...)
+       apply_integer(...)
+- used in the project: object oriented approach:
+  - (abstract) base class SchemeValue implements all methods including "apply" as raising
+    an SchemeError or returning "false" (like "number?")
+  - the implementation of a certain type (e.g. integer) inherits from base clase and overwrites
+    the default wrong/ "raise error" implementation with the correct one, so in SchemeNumber
+    would return "true" for "number?" but an other helper method "pair?" would still return "false". the apply method is implemeting the details required for applying integer values
+
+
+
+
+Implicit Sequences
+..................
+- data not stored in memory (pre computed) but generated on demand
+- used for unbound (infinite) data sets
+- example: prime numbers, all emails written world wide (grows every second)
+- lazy computation: delay computation until needed
+- classic implementation: iterator:
+
+>>> class LetterIter:
+        """An iterator over letters of the alphabet in ASCII order."""
+        def __init__(self, start='a', end='e'):
+            self.next_letter = start
+            self.end = end
+        def __next__(self):
+            if self.next_letter == self.end:
+                raise StopIteration
+            letter = self.next_letter
+            self.next_letter = chr(ord(letter)+1)
+            return letter
+
+>>> letter_iter = LetterIter()
+>>> letter_iter.__next__()
+'a'
+>>> letter_iter.__next__()
+'b'
+>>> next(letter_iter)
+'c'
+>>> letter_iter.__next__()
+'d'
+>>> letter_iter.__next__()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 12, in next
+StopIteration
+
+- to implement an endless iterator: never raise StopIteration
+
+- more complex iterations by generator:
+
+Generators
+..........
+- http://www.jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
+- special type of iterator
+- implemented in Python as generator functions
+- simply using "yield" indecates that a function is iteratable
+- "yield is just return (plus a little magic) for generator functions"
+- "When a generator function calls yield, the "state" of the generator function is frozen; the values of all variables are saved and the next line of code to be executed is recorded until next() is called again. Once it is, the generator function simply resumes where it left off. If next() is never called again, the state recorded during the yield call is (eventually) discarded. "
+- inserting data into a generator at runtime: .send() method
+
+Streams
+.......
+- lazy evaluated Rlists
+- an other (older) way of implicitly representing representing sequential data
+- a stream is a lazily computed recursive list
+- " Unlike an Rlist, the rest of a stream is only computed when it is looked up, rather than being stored in advance. That is, the rest of a stream is computed lazily."
+- "a stream stores how to compute the rest of the stream, rather than always storing the rest explicitly"
+
+
+
+
 executing only a single function for doctests
 ---------------------------------------------
 
