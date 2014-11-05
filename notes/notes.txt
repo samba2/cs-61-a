@@ -358,8 +358,29 @@ declaritive programming with Logic (Scheme Prolog)
       (every-other2 ?left_rest ?right_rest) )                                               ;; seconf element of the list, which means ?left_rest starts at the third
                                                                                             ;; element
 
-    
 
+locks
+.....
+manager = CriticalSection()
+def withdraw(amount):
+    with manager:
+        if amount > self._balance:
+            raise ValueError("insufficient funds")
+        else:
+             self._balance -= amount
+        return self._balance    
+
+from threading import Lock
+class CriticalSection:
+    def __init__(self):
+        self.__lock = Lock()
+    def __enter__(self):
+        self.__lock.acquire()
+
+    def __exit__(self, exception_type, exception_val, traceback):
+        self.__lock.release()
+
+CriticalSectionManager = CriticalSection()
 
 
 
