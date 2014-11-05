@@ -341,6 +341,27 @@ Streams
 - "a stream stores how to compute the rest of the stream, rather than always storing the rest explicitly"
 
 
+declaritive programming with Logic (Scheme Prolog)
+..................................................
+- try to start with simple fixed queries without quering the result set (no variables used)
+- e.g. (query (every-other2 (frodo merry sam wuff) (frodo sam)))
+       (query (every-other2 (frodo) (frodo)))
+- it's a bit like unit testing, think of simple queries which should be successful and write them down
+- simple facts are easy (fact (eats shark small_fish)) 
+- nested (complex) facts:
+  - see the first block (conclusion/ Schlussfolgerung) as pattern which defines variables which are used in the subsequent hyposesis blocks (behauptungen)
+  - for lists those hyposesis are recursive, meaning they usually call the same fact with simpler arguments (moving towards the end of the list(s) )
+- e.g.
+(fact (every-other2 (?a . ()) (?a . ())))     ;; base case fact, two lists with one element each are equal if this element is equal
+(fact (every-other2 () ()))                   ;; base case fact, two empty lists are identical
+(fact (every-other2 (?left_first ?left_second . ?left_rest) (?right_first . ?right_rest))   ;; define the pattern. here ?left_second is the
+      (every-other2 ?left_rest ?right_rest) )                                               ;; seconf element of the list, which means ?left_rest starts at the third
+                                                                                            ;; element
+
+    
+
+
+
 
 
 executing only a single function for doctests
