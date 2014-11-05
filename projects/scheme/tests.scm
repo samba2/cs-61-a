@@ -8,6 +8,24 @@
 
 ;;; *** Add more of your own here! ***
 
+(and)
+; expect #t
+
+(and 4 5 6)
+; expect 6
+
+(and #t #f 42 (/ 1 0))
+; expect #f
+
+(or)
+; expect #f
+
+(or 5 2 1)
+; expect 5
+
+(or 4 #t (/ 1 0))
+; expect 4
+
 (if (= 4 2) true false)
 ; expect #f
 
@@ -24,7 +42,7 @@
 ; expect 0
 
 (if #f 500)
-; expect okay 
+; expect okay
 
 (define (outer x y)
      (define (inner z x)

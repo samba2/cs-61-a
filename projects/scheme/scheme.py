@@ -430,9 +430,28 @@ def do_if_form(vals, env):
     return scheme_eval(true_expr, env), None
 
 
+def _short_circuit_list_eval(list, env, empty_list_return_val, predicate):
+
+    def _is_last_element(index):
+        return index == list.length()
+
+    if list.length() == 0:
+        return empty_list_return_val, None
+
+    for index, expr in enumerate(list, 1):
+        if _is_last_element(index):
+            return scheme_eval(expr, env), None
+
+        result = scheme_eval(expr, env)
+        if predicate(result):
+            return result, None
+
+
 def do_and_form(vals, env):
     """Evaluate short-circuited and with parameters VALS in environment ENV."""
     "*** YOUR CODE HERE ***"
+
+    return _short_circuit_list_eval(vals, env, scheme_true, lambda x: x is scheme_false)
 
 def quote(value):
     """Return a Scheme expression quoting the Scheme VALUE.
@@ -447,7 +466,9 @@ def quote(value):
 
 def do_or_form(vals, env):
     """Evaluate short-circuited or with parameters VALS in environment ENV."""
+
     "*** YOUR CODE HERE ***"
+    return _short_circuit_list_eval(vals, env, scheme_false, lambda x: x is not scheme_false)
 
 def do_cond_form(vals, env):
     """Evaluate cond form with parameters VALS in environment ENV."""
