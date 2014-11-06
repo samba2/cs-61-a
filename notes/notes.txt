@@ -359,6 +359,8 @@ declaritive programming with Logic (Scheme Prolog)
                                                                                             ;; element
 
 
+        
+
 locks
 .....
 manager = CriticalSection()

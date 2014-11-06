@@ -1,0 +1,43 @@
+1.1. (query (eats shark big-fish))
+1.2. (query (food-chain ?what small-fish))
+1.3. (query (eats ?what small-fish))
+1.4. (query (eats ?what sharks)) -> Failed
+1.5. (query (eats ?what zombies)) -> Failed
+
+
+
+Question 3:
+(fact (last-element (?car . ()) ?car))
+(fact (last-element (?car . ?cdr) ?el) (last-element ?cdr ?el))
+
+(query (last-element (c) c))        ;; success
+(query (last-element (a b c) c))    ;; success
+(query (last-element (a b c) a))    ;; fail
+(query (last-element (a b c) b))    ;; fail
+
+
+Question 4:
+had to look that up:
+(fact (firsts () ()))            ;; base case
+(fact (firsts ((?x . ?_) . ?ls)       (?x      .     ?xs)) (firsts ?ls ?xs))
+;;                 ^        ^           ^             ^               ^
+;;        first list remaining lists   car of        cdr         remaining lists and result list cdr  
+;;                                     first list   
+
+(query (firsts ((1 2 3 4) (2 3 4 5) (1 2 3 4) (1 2 3 2)) (1 2 1 1)))   ;; success
+(query (firsts ((2 3 4) (3 4 5) (2 3 4) (2 3 2)) (2 3 2 2)))           ;; success
+
+
+question 5:
+(fact (rests () ()))            ;; base case
+(fact (rests ((?inner_car . ?inner_cdr) . ?remaining_lists)  (?inner_cdr  .   ?xs)) (rests ?remaining_lists ?xs))
+(query (rests ((1 2 3 4) (2 3 4 5) (1 2 3 4) (1 2 3 2))  ((2 3 4) (3 4 5) (2 3 4) (2 3 2)) ))
+
+(query (rests ((1 2 3 4) (2 3 4 5) (1 2 3 4) (1 2 3 2)) ?x))
+;;?x should be ((2 3 4) (3 4 5) (2 3 4) (2 3 2))
+
+(query (rests ((2 3 4) (3 4 5) (2 3 4) (2 3 2)) ?y))
+; ?y should be ((3 4) (4 5) (3 4) (3 2))
+
+
+decided to skip Sudoku example
