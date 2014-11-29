@@ -281,8 +281,6 @@ Scheme project findings
     would return "true" for "number?" but an other helper method "pair?" would still return "false". the apply method is implemeting the details required for applying integer values
 
 
-
-
 Implicit Sequences
 ..................
 - data not stored in memory (pre computed) but generated on demand
@@ -340,6 +338,11 @@ Streams
 - " Unlike an Rlist, the rest of a stream is only computed when it is looked up, rather than being stored in advance. That is, the rest of a stream is computed lazily."
 - "a stream stores how to compute the rest of the stream, rather than always storing the rest explicitly"
 
+Unification
+...........
+- basis of logic interpreter
+- "Unification is a general method of matching a query to a fact, each of which may contain variables. The query interpreter applies this operation repeatedly, first to match the original query to conclusions of facts, and then to match the hypotheses of facts to other conclusions in the database. In doing so, the query interpreter performs a search through the space of all facts related to a query. If it finds a way to support that query with an assignment of values to variables, it returns that assignment as a successful result."
+
 
 declaritive programming with Logic (Scheme Prolog)
 ..................................................
@@ -359,6 +362,11 @@ declaritive programming with Logic (Scheme Prolog)
                                                                                             ;; element
 
 
+MapREduce
+.........
+"An application is expressed in terms of pure functions that are used to map over a large dataset and then to reduce the mapped sequences of values into a final result."
+"...requires that the functions used to map and reduce the data be pure functions."
+"In general, a program expressed only in terms of pure functions has considerable flexibility in how it is executed. Sub-expressions can be computed in arbitrary order and in parallel without affecting the final result. A MapReduce application evaluates many pure functions in parallel, reordering computations to be executed efficiently in a distributed system."
         
 
 locks
@@ -383,7 +391,6 @@ class CriticalSection:
         self.__lock.release()
 
 CriticalSectionManager = CriticalSection()
-
 
 
 
