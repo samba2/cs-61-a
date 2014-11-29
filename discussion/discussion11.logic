@@ -1,0 +1,91 @@
+1. Write a fact that checks if two elements are equal.
+
+(fact (equals ?a ?a))
+(query (equals hund hund))
+Success!
+(query (equals hund ?a))
+Success!
+a: hund
+
+2. Define a set of facts about complementary nucleotides. Remember from biology that
+• Adenine and Thymine are complementary to each other
+• Cytosine and Guanine are complementary to each other
+
+(fact (same A T))
+(fact (same T A))
+(fact (same C G))
+(fact (same G C))
+
+3. Define a set of facts to model the table of data below.
+
+(fact (datatable (name Bulbasaur) (number 001) (color Green) (type grass)))
+(fact (datatable (name Charmander) (number 004) (color Red) (type Fire)))
+(fact (datatable (name Squirtle) (number 007) (color Blue) (type Water)))
+(fact (datatable (name Caterpie) (number 010) (color Green) (type Bug)))
+(fact (datatable (name Pikachu) (number 025) (color Yellow) (type Electric)))
+(query (datatable ?name (number ?what) ?col ?type))
+
+
+3.1. had to look that up:
+
+(fact (member ?x (?x . ?r)))
+(fact (member ?x (?y . ?r))
+      (member ?x ?r))
+
+3.2. 
+(fact (match ?x ?x))
+ this would also work:
+(fact (match () ()))
+(fact (match (?a . ?r) (?a . ?r) ))
+
+4.
+
+(fact (mapped2 ?other_fact () ()))
+(fact (mapped2 ?other_fact (?right_first . ?right_rest) (?left_first . ?left_rest))
+      (?other_fact ?right_first ?left_first)
+      (mapped2 ?other_fact ?right_rest ?left_rest))
+
+(query (mapped2 complementory2 () ()))
+(query (mapped2 complementory2 (g) (c)))
+(query (mapped2 complementory2 (g t a) (c a t)))
+(query (mapped2 complementory2 (g t a g t a g t a) (c a t c a t c a t)))
+
+
+5.
+;; first time without looking the answer up !!! yeah!!
+(fact (prefix () ()))
+(fact (prefix ?x ?x))
+(fact (prefix () ?x))
+(fact (prefix (?f1 . ?r1) (?f2 . ?r2))
+      (prefix ?f1 ?f2)
+      (prefix ?r1 ?r2))
+
+(query (prefix (never give up) (never gonna give you up)))                ;; failed
+(query (prefix () ()))                                                    ;; success
+(query (prefix (for no one) (for no one)))                                ;; success
+(query (prefix () (got to get you into my life)))                         ;; sucess
+(query (prefix (being for the) (being for the benefit of mister kite)))   ;; success
+(query (prefix (want i to) (i want to hold your hand)))                   ;; failed
+
+;; as usual, the solution is simpler:
+(fact (prefix () ?any-list))                       ;; shrunk base case
+(fact (prefix (?first . ?small) (?first . ?big))   ;; since ?first is equal for both current elements, we just need to decend with the rests
+      (prefix ?small ?big))
+
+6.
+;; got it working !
+
+(fact (sublist () ()))
+(fact (sublist ?sublist ?mainlist) (prefix ?sublist ?mainlist))   ;; the sublist is a prefix of main list
+(fact (sublist ?sublist (?f . ?r)) (sublist ?sublist ?r))         ;; the rest of main list is a sub list
+
+(query (sublist (give) (give)))                               ;; success
+(query (sublist (never gonna) (never gonna give you up)))     ;; success
+(query (sublist (give) (never gonna give you up)))            ;; success
+(query (sublist (you up) (never gonna give you up)))          ;; success
+(query (sublist () (never gonna give you up)))                ;; success
+(query (sublist (let you down) (never gonna give you up)))    ;; failed
+(query (sublist (never give up) (never gonna give you up)))   ;; failed
+
+
+
