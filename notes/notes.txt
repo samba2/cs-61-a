@@ -401,6 +401,12 @@ Conditions
 
 
 
+eval/ recursion findings (Mobile example):
+ - if the underlying objects are well defined (asserts ....) it is easy to brute/force their generation mimicking some "artifical intelligence"
+
+
+
+
 executing only a single function for doctests
 ---------------------------------------------
 

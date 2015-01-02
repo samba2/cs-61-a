@@ -148,3 +148,36 @@ class Weight:
 
     def is_balanced(self):
         return True
+
+
+def interpret_mobile(s):
+    """Return a Mobile described by string s by substituting one of the classes
+    Branch, Weight, or Mobile for each occurrenct of the letter T.
+
+    >>> simple = 'Mobile(T(2,T(1)), T(1,T(2)))'
+    >>> a = interpret_mobile(simple)
+    >>> interpret_mobile(simple).weight
+    3
+    >>> interpret_mobile(simple).is_balanced()
+    True
+    >>> s = 'T(T(4,T(T(4,T(1)),T(1,T(4)))),T(2,T(10)))'
+    >>> m = interpret_mobile(s)
+    >>> m.weight
+    15
+    >>> m.is_balanced()
+    True
+    """
+    next_T = s.find('T')        # The index of the first 'T' in s.
+    if next_T == -1:            # The string 'T' was not found in s
+        try:
+            return eval(s)      # Interpret s
+        except TypeError as e:
+            return None         # Return None if s is not a valid mobile
+    for t in ('Branch', 'Weight', 'Mobile'):
+        "*** YOUR CODE HERE ***"
+        a = s.replace('T', t, 1)
+        mobile = interpret_mobile(a)
+        if type(mobile) is Mobile:
+            return mobile
+    return None
+    
