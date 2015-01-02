@@ -57,50 +57,72 @@ def increment_stream(s):
 ints = Stream(1, lambda: increment_stream(ints))
 
 
-## Q4.
+# Q4.
+
+def scale_stream(s, k):
+    """Return a stream of the elements of S scaled by a number K.
+
+    >>> s = scale_stream(ints, 5)
+    >>> s.first
+    5
+    >>> s.rest
+    Stream(10, <...>)
+    >>> scale_stream(s.rest, 10)[2]
+    200
+    """
+    "*** YOUR CODE HERE ***"
+
+    def compute_rest():
+        return scale_stream(s.rest, k)
+
+    return Stream(s.first * k, compute_rest)
+
+# Q5.
+
+def merge(s0, s1):
+    """Return a stream over the elements of increasing s0 and s1, removing
+    repeats.
+
+    >>> twos = scale_stream(ints, 2)
+    >>> threes = scale_stream(ints, 3)
+    >>> m = merge(twos, threes)
+    >>> [m[i] for i in range(10)]
+    [2, 3, 4, 6, 8, 9, 10, 12, 14, 15]
+    """
+    if s0 is Stream.empty:
+        return s1
+    elif s1 is Stream.empty:
+        return s0
+
+    e0, e1 = s0.first, s1.first
+
+    if e0 == e1:
+        return Stream(e0, lambda: merge(s0.rest, s1.rest))
+    elif e0 < e1:
+        return Stream(e0, lambda: merge(s0.rest, s1))
+    else:
+        return Stream(e1, lambda: merge(s0, s1.rest))
+
+
+def make_s():
+    """Return a stream over all positive integers with only factors 2, 3, & 5.
+
+    >>> s = make_s()
+    >>> [s[i] for i in range(20)]
+    [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 27, 30, 32, 36]
+    """
+    def rest():
+        "*** YOUR CODE HERE ***"
+#        twos = scale_stream(ints, 2)
+#        threes = scale_stream(ints, 3)
+#        fives = scale_stream(ints, 5)
+#        
+#        twos_and_threes = merge(twos, threes)
 #
-#def scale_stream(s, k):
-#    """Return a stream of the elements of S scaled by a number K.
-#
-#    >>> s = scale_stream(ints, 5)
-#    >>> s.first
-#    5
-#    >>> s.rest
-#    Stream(10, <...>)
-#    >>> scale_stream(s.rest, 10)[2]
-#    200
-#    """
-#    "*** YOUR CODE HERE ***"
-#
-#
-## Q5.
-#
-#def merge(s0, s1):
-#    """Return a stream over the elements of increasing s0 and s1, removing
-#    repeats.
-#
-#    >>> twos = scale_stream(ints, 2)
-#    >>> threes = scale_stream(ints, 3)
-#    >>> m = merge(twos, threes)
-#    >>> [m[i] for i in range(10)]
-#    [2, 3, 4, 6, 8, 9, 10, 12, 14, 15]
-#    """
-#    if s0 is Stream.empty:
-#        return s1
-#    elif s1 is Stream.empty:
-#        return s0
-#
-#    e0, e1 = s0.first, s1.first
-#    "*** YOUR CODE HERE ***"
-#
-#def make_s():
-#    """Return a stream over all positive integers with only factors 2, 3, & 5.
-#
-#    >>> s = make_s()
-#    >>> [s[i] for i in range(20)]
-#    [1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 27, 30, 32, 36]
-#    """
-#    def rest():
-#        "*** YOUR CODE HERE ***"
-#    s = Stream(1, rest)
-#    return s
+#        return merge(fives, twos_and_threes) 
+
+        # this is the solution, mine didn't work
+        two_three = merge(scale_stream(s, 2), scale_stream(s, 3))
+        return merge(two_three, scale_stream(s, 5))
+    s = Stream(1, rest)
+    return s
