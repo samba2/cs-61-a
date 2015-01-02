@@ -1,33 +1,42 @@
-1.2
-"Pure functions are restricted in that they cannot have side effects or change behavior over time. "
+Functions
+=========
 
-HOF definition:
-    A function that manipulates other functions as data is called a higher order function (HOF).
-    For instance, a HOF can be a function that takes functions as arguments, returns a function
-    as its value, or both.
+"Pure functions are restricted in that they cannot have side effects 
+or change behavior over time. "
 
-difference defining functions with "def" vs. lambda expression:
-  - "def" is a statement, evaluation has a side effect > generating function binding in current environment
-  - lambda is an expression which won't usually change environemnt
+Higer Order Functions: 
+"A function that manipulates other functions as data is called a 
+higher order function (HOF). For instance, a HOF can be a function 
+that takes functions as arguments, returns a function as its value, 
+or both." 
+
+Difference defining functions with "def" vs. lambda expression:
+  - "def" is a statement, evaluation has a side effect > 
+    generating function binding in current environment
+  - lambda is an expression which won't usually change the environment,
     exception: lambda expression is assigned to a variable
 
-pattern for designing recursive functions:
- - start with a base case, conditional statement for function inputs that are >>>simplest<<< 
-   to process
- - base case is followed by one or more recursive calls. recursive calls have one goal:
-   >>>simplifying the original problem<<<.
-   recursive functions express computation by simplifying problems incremendially
+
+Recursion
+=========
+
+Pattern for designing recursive functions:
+ - start with a base case, conditional statement for function inputs 
+   that are >>>simplest<<< to process
+ - base case is followed by one or more recursive calls. 
+   recursive calls have one goal: >>>simplifying the original problem<<<.
+ - recursive functions express computation by simplifying problems incrementally
      
-leap of faith:
+Leap of Faith:
  - treating a recursive call as a function abstraction
+ - "Before using a recursive call, you must be convinced that the recursive 
+    call will do what it is supposed to do. You do not need to think how 
+    recursive calls works, just assume that it returns the correct result. 
  
-mutual recursion:
+Mutual recursion:
  - a recursive procedure is divided by two functions calling each other  
 
-
-
-tipps from lab for recursive functions:
-
+Tipps from lab for recursive functions:
   1. Always start with the base case. The base case handles the simplest argument 
      your function would have to handle. The answer is extremely simple, and often 
      follows from the definition of the problem.
@@ -37,35 +46,35 @@ tipps from lab for recursive functions:
      should assume that the recursive call for this simpler problem will just work. 
      As you do more problems, you'll get better at this step.
 
-  3. Use the recursive call. Remember that the recursive call solves a simpler version 
-     of the problem. Now ask yourself how you can use this result to solve the original 
-     problem.
+  3. Use the recursive call. Remember that the recursive call solves a simpler 
+     version of the problem. Now ask yourself how you can use this result to solve 
+     the original problem.
 
-As a general rule of thumb, whenever you need to try multiple possibilities at the same time, 
-you should consider using tree recursion.
+   As a general rule of thumb, whenever you need to try multiple possibilities 
+   at the same time, you should consider using tree recursion.
 
-tail recursion
-..............
+Tail recursion:
   - http://de.wikipedia.org/wiki/Endrekursion
-  - "...wenn der rekursive Funktionsaufruf die letzte Aktion zur Berechnung von f ist"
+  - "...wenn der rekursive Funktionsaufruf die letzte Aktion zur Berechnung 
+    von f ist"
 
   Example
   .......
 
   no tail recursion:
   
-  def len_rlist(s):         # A sequence is: 
-    """The length of rlist S."""
-    if s == empty_rlist:    # Empty or...
-        return 0
-    else:
-        return 1 + len_rlist(rest(s))
-                            # A first element and
-                            # the rest of the list 
-
+    def len_rlist(s):         # A sequence is: 
+      """The length of rlist S."""
+      if s == empty_rlist:    # Empty or...
+          return 0
+      else:
+          return 1 + len_rlist(rest(s))
+                              # A first element and
+                              # the rest of the list 
+  
     returned length is accumulated via summing up all the "1" returned.
 
-    tail recursive version:
+  tail recursive version:
 
     def len_rlist(s):
         def len(sofar, s):
@@ -88,69 +97,56 @@ tail recursion
             sofar, s = sofar+1, rest(s)
         return sofar
 
-    from recursion to iteration: http://www.refactoring.com/catalog/replaceRecursionWithIteration.html
+    from recursion to iteration: 
+    http://www.refactoring.com/catalog/replaceRecursionWithIteration.html
 
-lessons learned recursion (German)
-..................................
+Lessons Learned Recursion (German):
+  - haeufig liegen base case bedingung um "0", eine summation/ berechnung 
+    bis zu einem spitzenwert wird versucht umzubauen zu einer differenzbildung 
+    die gegen "0" geht
 
-- haeufig liegen base case bedingung um "0", eine summation/ berechnung bis zu einem spitzenwert
-  wird versucht umzubauen zu einer differenzbildung die gegen "0" geht
-- per rekursivem aufruf geaenderte parameter ( zb. def f(sum):  aufruf: f(sum-1) sind im frame
-  der aufgerufenen funktion mit neuem geaenderten wert lokal vorhanden. von hier aus kann weiter
-  runtergebrochen werden.
-- summation: wenn nicht gegen "0" gearbeitet werden kann, muss trotzdem irgendwie ein abbruch
-  wert (z.b. max_sum) in die rekusive-funktion propagiert werden. das macht man am besten mit
-  einer  hilfsfunktion, die als zusaetzliches, sich nicht aenderndes argument den orignalwert
-  max_sum mitfuehrt. siehe discussion/discussion3.py has_sum2() und sum_range() 
-- bei sprachen mit lexical scoping kann die innere hilfsfunktion problemlos auf die argumente
-  der parent-function zugreifen, siehe sum_range()   
-- tree-recursion: wenn es um wahrheitspruefung (True/ False) geht, dann werden die verschiedenen
-  suchzweige mit "OR" verknuepft. ein einziges "TRUE" in einer der rekursiven funktionsaufrufe
-  wird bis nach oben propagiert und gibt als gesamtergebnis auch ein TRUE 
+  - per rekursivem aufruf geaenderte parameter (zb. def f(sum):  aufruf: f(sum-1) 
+    sind im frame der aufgerufenen funktion mit neuem geaenderten wert lokal 
+    vorhanden. von hier aus kann weiter runtergebrochen werden.
+
+  - summation: wenn nicht gegen "0" gearbeitet werden kann, muss trotzdem irgendwie
+    ein abbruchwert (z.b. max_sum) in die rekusive-funktion propagiert werden. 
+    das macht man am besten mit einer  hilfsfunktion, die als zusaetzliches, sich 
+    nicht aenderndes argument den orignalwert max_sum mitfuehrt. 
+    siehe discussion/discussion3.py has_sum2() und sum_range() 
+
+  - bei sprachen mit lexical scoping kann die innere hilfsfunktion problemlos auf 
+    die argumente der parent-function zugreifen, siehe sum_range()   
+
+  - tree-recursion: wenn es um wahrheitspruefung (True/ False) geht, dann werden 
+    die verschiedenen suchzweige mit "OR" verknuepft. ein einziges "TRUE" in einer 
+    der rekursiven funktionsaufrufe wird bis nach oben propagiert und gibt als 
+    gesamtergebnis auch ein TRUE 
+
 
 Data Abstraction
-----------------
-Data abstraction is a methodology that enables us to isolate how a compound data object
-is used from the details of how it is constructed.
+================
+
+Data abstraction is a methodology that enables us to isolate how a 
+compound data object is used from the details of how it is constructed.
+
+Abstract Data Types:
+  ADTs are conceptual: a given programming language may or may not
+  have constructs specifically designed for ADT definition, but pro-
+  grammers can choose to organize their programs as collections of
+  ADTs in any case.
+
+Building Data Abstraction:
+  To facilitate data abstraction, you will need to create two types 
+  of functions: constructors and selectors. 
+  Constructors are functions that build the abstract data type. 
+  Selectors are functions that retrieve information from the data type.
 
 
-Abstract Data Types
-...................
-ADTs are conceptual: a given programming language may or may not
-have constructs specifically designed for ADT definition, but pro-
-grammers can choose to organize their programs as collections of
-ADTs in any case.
+Map/Reduce:
+  - general computational patterns of mapping, filtering, and accumulation
 
-building data abstraction
-.........................
-To facilitate data abstraction, you will need to create two types of functions: constructors
-and selectors. Constructors are functions that build the abstract data type. Selectors are
-functions that retrieve information from the data type.
-
-
----------------------------------
-A common convention is to use a single underscore character for the name in the for header 
-if the name is unused in the suite:
-
->>> for _ in range(3):
-        print('Go Bears!')
-
-Go Bears!
-Go Bears!
-Go Bears!
-
-This underscore is just another name in the environment as far as the interpreter is concerned, 
-but has a conventional meaning among programmers that indicates the name will not appear in 
-any expressions.
---------------------------------------
-
-map/reduce
-----------
-- general computational patterns of mapping, filtering, and accumulation
-
-
-example of a dispatch function
-..............................
+Example of a dispatch function:
 >>> def dictionary():
         """Return a functional implementation of a dictionary."""
         records = []
@@ -175,269 +171,321 @@ example of a dispatch function
                 return tuple(v for _, v in records)
         return dispatch
 
-using the function:
->>> d = dictionary()
->>> d('setitem', 3, 9)
->>> d('setitem', 4, 16)
->>> d('getitem', 3)
-9
->>> d('getitem', 4)
-16
->>> d('keys')
-(3, 4)
->>> d('values')
-(9, 16)
+  using the function:
+  >>> d = dictionary()
+  >>> d('setitem', 3, 9)
+  >>> d('setitem', 4, 16)
+  >>> d('getitem', 3)
+  9
+  >>> d('getitem', 4)
+  16
+  >>> d('keys')
+  (3, 4)
+  >>> d('values')
+  (9, 16)
 
-constrained based system
-........................
+Constrained based system:
+  - is a programming paradigm (http://en.wikipedia.org/wiki/Constraint_programming)
+  - calculation possible in multiple directions 
+    (not just only one as with using an equation)
+  - modelling the constraint with simple blocks like constants, adder, 
+    multiplier, (user) input
+  - changing the input changes also the network which results to a 
+    different value at on other input
+  - see example with converting celius to fahrenheit and back
 
-- is a programming paradigm (http://en.wikipedia.org/wiki/Constraint_programming)
-- calculation possible in multiple directions (not just only one as with using an equation)
-- modelling the constraint with simple blocks like constants, adder, multiplier, (user) input
-- changing the input changes also the network which results to a different value at on other input
-- see example with converting celius to fahrenheit and back
+Noetherian Induction:
+ - a relation on values is well founded if there are no infinite decending chaines.
+ - "If you start at some value and keep stepping to smaller values 
+   (according to the relation) then you must always get to a minimal 
+   value after finite steps."
 
+Dictionaries:
+  - key is immutable to make shure that not mutiple keys are pointing to 
+    the same value
+  - main issue is that the underlying hash function would have problems
 
+Memoization:
+  "Memoization exemplifies a common pattern in programming that 
+  computation time can often be decreased at the expense of 
+  increased use of space, or vis versa."
 
-TODO clearify "proof by induction"
-
-running doc tests:
-python3 -m doctest -v hog.py
-
-debugging
-.........
-
-The typical usage to break into the debugger from a running program is to insert
-
-import pdb; pdb.set_trace()
-
-at the location you want to break into the debugger. You can then step through the code following this statement, 
-and continue running without the debugger using the c command.
-
-limiting recursion depth
-........................
-import sys; sys.setrecursionlimit(30)
-
-
-noetherian induction:
-a relation on values is well founded if there are no infinite decending chaines.
-
-"If you start at some value and keep stepping to smaller values (according to the relation)
-then you must always get to a minimal value after finite steps."
-
-
-hints
-.....
-  -list attributes/ methods of a class: dir
-  - example dir(list) to show the "list" class
-
-dictionaries
-............
-- key is immutable to make shure that not mutiple keys are pointing to the same value
-- main issue is that the underlying hash function would have problems
-
-Memoization
-...........
-Memoization exemplifies a common pattern in programming that computation time can often be 
-decreased at the expense of increased use of space, or vis versa.
 
 Programming Languages
-.....................
-After all, interpreters are programs that can carry out any possible computation, depending on their input. 
-However, many interpreters have an elegant common structure: two mutually recursive functions. 
-The first evaluates expressions in environments; the second applies functions to arguments.
+=====================
 
-An interpreter for a programming language is a function that, when applied to an expression of the language, 
-performs the actions required to evaluate that expression.
+"After all, interpreters are programs that can carry out any 
+possible computation, depending on their input. 
+However, many interpreters have an elegant common structure: 
+two mutually recursive functions. 
+The first evaluates expressions in environments; 
+the second applies functions to arguments."
 
-A parser is a composition of two components: a lexical analyzer and a syntactic analyzer. First, the lexical 
-analyzer partitions the input string into tokens, which are the minimal syntactic units of the language 
-such as names and symbols. Second, the syntactic analyzer constructs an expression tree from this sequence 
-of tokens. The sequence of tokens produced by the lexical analyzer is consumed by the syntactic analyzer.
+"An interpreter for a programming language is a function that, 
+when applied to an expression of the language, 
+performs the actions required to evaluate that expression."
 
-"So what is evaluation? Evaluation discovers the form of an expression and executes a corresponding 
- evaluation rule.
+A parser is a composition of two components: a lexical analyzer and 
+a syntactic analyzer. First, the lexical analyzer partitions 
+the input string into tokens, which are the minimal syntactic units 
+of the language such as names and symbols. Second, the syntactic 
+analyzer constructs an expression tree from this sequence 
+of tokens. The sequence of tokens produced by the lexical analyzer 
+is consumed by the syntactic analyzer.
+
+"So what is evaluation? Evaluation discovers the form of an 
+expression and executes a corresponding evaluation rule."
  
- Primitive expressions are evaluated directly. Call expressions are evaluated recursively:
+"Primitive expressions are evaluated directly. Call expressions 
+are evaluated recursively:
+
  (1) Evaluate each operand expression,
  (2) Collect their values as a list of arguments, and
  (3) Apply the named operator to the argument list."
 
-"Any difficulty in computer science can be overcome by adding a level of indirection."
+"Any difficulty in computer science can be overcome by adding 
+a level of indirection."
 
-Scheme project findings
-.......................
-- calling "apply" for different scheme types (procedure, integer....)
-- one way:
-   - if isinstanceof(...)
-       apply_procedure(..)
-   - elsif isinstanceof(...)
-       apply_integer(...)
-- used in the project: object oriented approach:
-  - (abstract) base class SchemeValue implements all methods including "apply" as raising
-    an SchemeError or returning "false" (like "number?")
-  - the implementation of a certain type (e.g. integer) inherits from base clase and overwrites
-    the default wrong/ "raise error" implementation with the correct one, so in SchemeNumber
-    would return "true" for "number?" but an other helper method "pair?" would still return "false". the apply method is implemeting the details required for applying integer values
+Scheme project findings:
+  Problem: Calling "apply" for different scheme types (procedure, integer....)
+  
+  One Solution:   
+    if isinstanceof(...)
+      apply_procedure(..)
+    elsif isinstanceof(...)
+      apply_integer(...)
 
+  Used in the project: 
+    - object oriented approach
+    - (abstract) base class SchemeValue implements all methods including "apply" 
+      as raising an SchemeError or returning "false" (like "number?")
+    - the implementation of a certain type (e.g. integer) inherits from base clase 
+      and overwrites the default wrong/ "raise error" implementation with 
+      the correct one, so in SchemeNumber would return "true" for "number?" 
+      but an other helper method "pair?" would still return "false". 
+      the apply method is implemeting the details required for applying 
+      integer values
+  
 
 Implicit Sequences
-..................
+==================
+
 - data not stored in memory (pre computed) but generated on demand
 - used for unbound (infinite) data sets
 - example: prime numbers, all emails written world wide (grows every second)
 - lazy computation: delay computation until needed
-- classic implementation: iterator:
 
-"The iterator abstraction has two components: a mechanism for retrieving the next element in some underlying series of elements and a mechanism for signaling that the end of the series has been reached and no further elements remain."
+Classic implementation: iterator:
+  "The iterator abstraction has two components: a mechanism for retrieving 
+  the next element in some underlying series of elements and a mechanism 
+  for signaling that the end of the series has been reached and no further 
+  elements remain."
 
->>> class LetterIter:
-        """An iterator over letters of the alphabet in ASCII order."""
-        def __init__(self, start='a', end='e'):
-            self.next_letter = start
-            self.end = end
-        def __next__(self):
-            if self.next_letter == self.end:
-                raise StopIteration
-            letter = self.next_letter
-            self.next_letter = chr(ord(letter)+1)
-            return letter
+  >>> class LetterIter:
+          """An iterator over letters of the alphabet in ASCII order."""
+          def __init__(self, start='a', end='e'):
+              self.next_letter = start
+              self.end = end
+          def __next__(self):
+              if self.next_letter == self.end:
+                  raise StopIteration
+              letter = self.next_letter
+              self.next_letter = chr(ord(letter)+1)
+              return letter
+  
+  >>> letter_iter = LetterIter()
+  >>> letter_iter.__next__()
+  'a'
+  >>> letter_iter.__next__()
+  'b'
+  >>> next(letter_iter)
+  'c'
+  >>> letter_iter.__next__()
+  'd'
+  >>> letter_iter.__next__()
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    File "<stdin>", line 12, in next
+  StopIteration
+  
+  - to implement an endless iterator: never raise StopIteration
 
->>> letter_iter = LetterIter()
->>> letter_iter.__next__()
-'a'
->>> letter_iter.__next__()
-'b'
->>> next(letter_iter)
-'c'
->>> letter_iter.__next__()
-'d'
->>> letter_iter.__next__()
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "<stdin>", line 12, in next
-StopIteration
+Generators:
+  - more complex iterations by generator:
+  - http://www.jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
+  - special type of iterator
+  - implemented in Python as generator functions
+  - simply using "yield" indecates that a function is iteratable
+  - "yield is just return (plus a little magic) for generator functions"
+  - "When a generator function calls yield, the "state" of the generator function 
+    is frozen; the values of all variables are saved and the next line of code 
+    to be executed is recorded until next() is called again. Once it is, 
+    the generator function simply resumes where it left off. If next() is never 
+    called again, the state recorded during the yield call is (eventually) 
+    discarded."
+  - inserting data into a generator at runtime: .send() method
 
-- to implement an endless iterator: never raise StopIteration
+Streams:
+  - lazy evaluated recursive lists
+  - an other (older) way of implicitly representing representing sequential data
+  - a stream is a lazily computed recursive list
+  - "Unlike an Rlist, the rest of a stream is only computed when it is looked up, 
+    rather than being stored in advance. That is, the rest of a stream is 
+    computed lazily."
+  - "a stream stores how to compute the rest of the stream, rather than always 
+    storing the rest explicitly"
+ 
+ 
+Declaritive Programming
+=======================
 
-- more complex iterations by generator:
+- describe what to do but not how
+- SQL is the most known declaritve programing language.
+  
+Unification:
+  - basis of logic interpreter
+  - "Unification is a general method of matching a query to a fact, each of which 
+    may contain variables. The query interpreter applies this operation repeatedly, 
+    first to match the original query to conclusions of facts, and then to match 
+    the hypotheses of facts to other conclusions in the database. In doing so, 
+    the query interpreter performs a search through the space of all facts related 
+    to a query. If it finds a way to support that query with an assignment of values
+    to variables, it returns that assignment as a successful result." 
 
-Generators
-..........
-- http://www.jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
-- special type of iterator
-- implemented in Python as generator functions
-- simply using "yield" indecates that a function is iteratable
-- "yield is just return (plus a little magic) for generator functions"
-- "When a generator function calls yield, the "state" of the generator function is frozen; the values of all variables are saved and the next line of code to be executed is recorded until next() is called again. Once it is, the generator function simply resumes where it left off. If next() is never called again, the state recorded during the yield call is (eventually) discarded. "
-- inserting data into a generator at runtime: .send() method
+Declaritive programming with Logic (Scheme Prolog):
+  - try to start with simple fixed queries without quering the result set 
+   (no variables used)
+  - e.g. (query (every-other2 (frodo merry sam wuff) (frodo sam)))
+         (query (every-other2 (frodo) (frodo)))
+  - it's a bit like unit testing, think of simple queries which should be 
+    successful and write them down
+  - simple facts are easy (fact (eats shark small_fish)) 
+  - nested (complex) facts:
+    - see the first block (conclusion/ Schlussfolgerung) as pattern which 
+      defines variables which are used in the subsequent hyposesis blocks 
+      (behauptungen)
+    - for lists those hyposesis are recursive, meaning they usually call the 
+      same fact with simpler arguments (moving towards the end of the list(s))
+  - e.g.
+    (fact (every-other2 (?a . ()) (?a . ())))    ;; base case fact, two lists 
+                                                 ;; with one element each are 
+                                                 ;; equal if this element is equal
+    (fact (every-other2 () ()))                  ;; base case fact, two empty lists 
+                                                 ;; are identical
+    (fact (every-other2 
+            (?left_first ?left_second . ?left_rest) 
+            (?right_first . ?right_rest))        ;; define the pattern. here 
+          (every-other2 ?left_rest ?right_rest)) ;; ?left_second is the second 
+                                                 ;; element of the list, which 
+                                                 ;; means ?left_rest starts at 
+                                                 ;; the third element
+  
 
-Streams
-.......
-- lazy evaluated Rlists
-- an other (older) way of implicitly representing representing sequential data
-- a stream is a lazily computed recursive list
-- " Unlike an Rlist, the rest of a stream is only computed when it is looked up, rather than being stored in advance. That is, the rest of a stream is computed lazily."
-- "a stream stores how to compute the rest of the stream, rather than always storing the rest explicitly"
+Special Topics
+==============
 
-Unification
-...........
-- basis of logic interpreter
-- "Unification is a general method of matching a query to a fact, each of which may contain variables. The query interpreter applies this operation repeatedly, first to match the original query to conclusions of facts, and then to match the hypotheses of facts to other conclusions in the database. In doing so, the query interpreter performs a search through the space of all facts related to a query. If it finds a way to support that query with an assignment of values to variables, it returns that assignment as a successful result."
+MapReduce:
+  "An application is expressed in terms of pure functions that are used to map 
+  over a large dataset and then to reduce the mapped sequences of values into 
+  a final result."
 
+  "...requires that the functions used to map and reduce the data be 
+  pure functions."
 
-declaritive programming with Logic (Scheme Prolog)
-..................................................
-- try to start with simple fixed queries without quering the result set (no variables used)
-- e.g. (query (every-other2 (frodo merry sam wuff) (frodo sam)))
-       (query (every-other2 (frodo) (frodo)))
-- it's a bit like unit testing, think of simple queries which should be successful and write them down
-- simple facts are easy (fact (eats shark small_fish)) 
-- nested (complex) facts:
-  - see the first block (conclusion/ Schlussfolgerung) as pattern which defines variables which are used in the subsequent hyposesis blocks (behauptungen)
-  - for lists those hyposesis are recursive, meaning they usually call the same fact with simpler arguments (moving towards the end of the list(s) )
-- e.g.
-(fact (every-other2 (?a . ()) (?a . ())))     ;; base case fact, two lists with one element each are equal if this element is equal
-(fact (every-other2 () ()))                   ;; base case fact, two empty lists are identical
-(fact (every-other2 (?left_first ?left_second . ?left_rest) (?right_first . ?right_rest))   ;; define the pattern. here ?left_second is the
-      (every-other2 ?left_rest ?right_rest) )                                               ;; seconf element of the list, which means ?left_rest starts at the third
-                                                                                            ;; element
+  "In general, a program expressed only in terms of pure functions has considerable
+  flexibility in how it is executed. Sub-expressions can be computed in arbitrary 
+  order and in parallel without affecting the final result. A MapReduce application 
+  evaluates many pure functions in parallel, reordering computations to be executed 
+  efficiently in a distributed system."
 
+Locks:
+  manager = CriticalSection()
+  def withdraw(amount):
+      with manager:
+          if amount > self._balance:
+              raise ValueError("insufficient funds")
+          else:
+               self._balance -= amount
+          return self._balance    
+  
+  from threading import Lock
+  class CriticalSection:
+      def __init__(self):
+          self.__lock = Lock()
+      def __enter__(self):
+          self.__lock.acquire()
+  
+      def __exit__(self, exception_type, exception_val, traceback):
+          self.__lock.release()
+  
+  CriticalSectionManager = CriticalSection()
 
-MapREduce
-.........
-"An application is expressed in terms of pure functions that are used to map over a large dataset and then to reduce the mapped sequences of values into a final result."
-"...requires that the functions used to map and reduce the data be pure functions."
-"In general, a program expressed only in terms of pure functions has considerable flexibility in how it is executed. Sub-expressions can be computed in arbitrary order and in parallel without affecting the final result. A MapReduce application evaluates many pure functions in parallel, reordering computations to be executed efficiently in a distributed system."
-        
-
-locks
-.....
-manager = CriticalSection()
-def withdraw(amount):
-    with manager:
-        if amount > self._balance:
-            raise ValueError("insufficient funds")
-        else:
-             self._balance -= amount
-        return self._balance    
-
-from threading import Lock
-class CriticalSection:
-    def __init__(self):
-        self.__lock = Lock()
-    def __enter__(self):
-        self.__lock.acquire()
-
-    def __exit__(self, exception_type, exception_val, traceback):
-        self.__lock.release()
-
-CriticalSectionManager = CriticalSection()
-
-Conditions
-..........
-- wait, notify. 
-- TODO: lookup wikepedia on that
-
-
-
-eval/ recursion findings (Mobile example):
- - if the underlying objects are well defined (asserts ....) it is easy to brute/force their generation mimicking some "artifical intelligence"
-
-
+  Thread Sync Tutorial: 
+  http://tutorials.jenkov.com/java-concurrency/thread-signaling.html
 
 
-executing only a single function for doctests
----------------------------------------------
+Python
+======
 
-if __name__ == "__main__":
-    import doctest
-    doctest.run_docstring_examples( REPLACE_ME , globals(), verbose=True)
+A common convention is to use a single underscore character for the name in the for header 
+if the name is unused in the suite:
 
-scheme
-......
+>>> for _ in range(3):
+        print('Go Bears!')
+
+Go Bears!
+Go Bears!
+Go Bears!
+
+This underscore is just another name in the environment as far as the interpreter is concerned, 
+but has a conventional meaning among programmers that indicates the name will not appear in 
+any expressions.
+
+running doc tests:
+  python3 -m doctest -v hog.py
+
+Executing only a single function for doctests:
+  if __name__ == "__main__":
+      import doctest
+      doctest.run_docstring_examples( REPLACE_ME , globals(), verbose=True)
+
+Debugging:
+  The typical usage to break into the debugger from a running program is to insert
+  
+  import pdb; pdb.set_trace()
+
+  at the location you want to break into the debugger. You can then step through 
+  the code following this statement, and continue running without the debugger 
+  using the c command.
+
+Limiting recursion depth:
+  import sys; sys.setrecursionlimit(30)
+
+List attributes/ methods of a class: 
+  - dir()
+  - example dir(list) to show the "list" class
+
+Scheme
+======
 - mit-scheme
 - rlwrap mit-scheme
 - (load "file.scm")
 
 
+Orga
+====
 course page on github: https://github.com/PNHilfinger/61a-sp14-website
 
-
-backup lecture data
--------------------
-mount mac: mount -t cifs //192.168.2.3/samba /mnt/mac/ -o username=samba
-mirror web page: wget -mk -w 20 http://inst.cs.berkeley.edu/~cs61a/sp14/
-dowload lecture screencasts: youtube-dl -citk --max-quality FORMAT 'https://www.youtube.com/view_play_list?p=-XXv-cvA_iC9x0nmh5OZyxljQU6pUWWk'
-
-virtual box admin
------------------
-- changing inside the guest (this is probalby the only thing required):
-- changing guest box addions (this is the important bit): https://www.virtualbox.org/ticket/2928
-
-- disabling from host (didn't work):
-- VBoxManage.exe list vms
-- C:\Program Files\Oracle\VirtualBox>VBoxManage setextradata "Xubuntu 13" "VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled" "1"
-
-
+backup lecture data:
+  mirror web page: wget -mk -w 20 http://inst.cs.berkeley.edu/~cs61a/sp14/
+  dowload lecture screencasts: youtube-dl -citk --max-quality FORMAT 'https://www.youtube.com/view_play_list?p=-XXv-cvA_iC9x0nmh5OZyxljQU6pUWWk'
+  
+virtual box admin:
+  - changing inside the guest (this is probalby the only thing required):
+  - changing guest box addions (this is the important bit): 
+    https://www.virtualbox.org/ticket/2928
+  
+  - disabling from host (didn't work):
+    - VBoxManage.exe list vms
+    - C:\Program Files\Oracle\VirtualBox>VBoxManage setextradata "Xubuntu 13" "VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled" "1"
 
